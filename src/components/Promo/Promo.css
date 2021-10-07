@@ -1,0 +1,153 @@
+.promo {
+  width: 100vw;
+  height: 100vh;
+  max-height: 648px;
+  background-color: #F3C1F8;
+}
+
+.promo__container {
+  width: calc(1280px - 70px*2);
+  margin: 0 auto;
+  padding: 75px 0 25px 0;
+  display: grid;
+  grid-template-columns: 1fr fit-content(310px);
+  grid-template-areas:
+  "title logo"
+  "paragraph logo"
+  "about .";
+}
+
+.promo__title {
+  max-width: 640px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 50px;
+  line-height: 58px;
+  color: #000000;
+  margin: 0 0 36px 0;
+  grid-area: title;
+}
+
+.promo__paragraph {
+  max-width: 310px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  color: #000000;
+  mix-blend-mode: normal;
+  opacity: 0.5;
+  grid-area: paragraph;
+}
+
+.promo__logo {
+  width: 310px;
+  height: 304px;
+  grid-area: logo;
+}
+
+.promo__about {
+  width: 129px;
+  height: 36px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  opacity: 0.6;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 3px;
+  outline: none;
+  background: transparent;
+  margin: 84px 0 0 0;
+  padding: 10px 0 10px 0;
+  grid-area: about;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1279px) {
+  .promo {
+    max-height: 924px;
+  }
+
+  .promo__container {
+    width: calc(100% - 30px*2);
+    padding: 140px 0 10px 0;
+    grid-template-columns: 680px;
+    grid-template-areas:
+    "logo"
+    "title"
+    "paragraph"
+    "about";
+    justify-content: center;
+  }
+
+  .promo__title {
+    max-width: 680px;
+    font-size: 40px;
+    line-height: 50px;
+    text-align: center;
+    margin: 48px 0 0 0;
+  }
+
+  .promo__paragraph {
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    margin: 22px auto 0;
+  }
+
+  .promo__logo {
+    margin: 0 auto;
+  }
+
+  .promo__about {
+    margin: 92px auto 0;
+  }
+  
+}
+
+@media screen and (max-width: 767px) {
+  .promo {
+    max-height: 710px;
+  }
+
+  .promo__container {
+    width: 100%;
+    padding: 70px 0 30px 0;
+    grid-template-columns: 300px;
+    justify-content: center;
+  }
+
+  .promo__logo {
+    width: 210px;
+    height: 206px;
+  }
+
+  .promo__title {
+    max-width: 300px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.04em;
+    margin: 44px 0 0 0;
+  }
+
+  .promo__paragraph {
+    max-width: 260px;
+    font-size: 13px;
+    line-height: 16px;
+    margin: 24px auto 0;
+  }
+
+  .promo__about {
+    margin: 80px auto 0;
+  }
+}

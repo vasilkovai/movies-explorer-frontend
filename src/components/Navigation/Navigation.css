@@ -1,0 +1,82 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav__pages {
+  width: 212px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 364px 0 0;
+}
+
+.nav__page {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: right;
+  color: #000000;
+  text-decoration: none;
+}
+
+.nav__page:hover {
+  opacity: .7;
+}
+
+.nav__page_active {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: right;
+  color: #000000;
+  text-decoration: none;
+}
+
+.nav__page_active:hover {
+  opacity: .7;
+}
+
+.nav__profile {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  text-decoration: none;
+}
+
+.nav__profile:hover {
+  opacity: .7;
+}
+
+.nav__profile-link {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+  margin: 0;
+}
+
+.nav__profile-icon {
+  width: 11,5px;
+  height: 14px;
+  margin: 0;
+}
+
+@media screen and (max-width: 1279px) {
+  .nav {
+    display: none;
+  }
+}
+
