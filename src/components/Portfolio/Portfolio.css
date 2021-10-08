@@ -25,15 +25,16 @@
   flex-direction: row;
   justify-content: space-between;
   text-decoration: none;
-  font-family: Inter;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 30px;
-  height: 50px;
+  line-height: 50px;
   letter-spacing: -0.04em;
   color: #000000;
-  margin: 0 0 40px 0;
-  padding: 0;
+  margin: 0 0 20px 0;
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid #E8E8E8;
 }
 
 .portfolio__link:last-of-type {
@@ -41,9 +42,7 @@
 }
 
 .portfolio__text {
-  max-height: 50px;
   margin: 0;
-  padding: 0;
 }
 
 .portfolio__text:hover {
@@ -52,7 +51,7 @@
 
 .portfolio__icon {
   width: 29px;
-  height: 60px;
+  height: 40px;
   margin: 0;
   padding: 0;
 }
