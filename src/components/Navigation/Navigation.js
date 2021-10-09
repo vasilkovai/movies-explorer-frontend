@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link} from 'react-router-dom';
-import profileIcon from './../../images/profile.png';
+import profileIcon from './../../images/profile1.svg';
 import './Navigation.css';
 
 function Navigation() {
@@ -25,7 +25,6 @@ function Navigation() {
         </div>
       </Route>
       <Link to="/profile" className="nav__profile">
-        <p className="navbar__profile-link">Аккаунт</p>
         <img className="navbar__profile-icon" alt="Аккаунт" src={profileIcon}/>
       </Link>
     </div>

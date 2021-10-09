@@ -56,21 +56,9 @@
   opacity: .7;
 }
 
-.nav__profile-link {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-  display: flex;
-  align-items: center;
-  color: #000000;
-  margin: 0;
-}
-
 .nav__profile-icon {
-  width: 11,5px;
-  height: 14px;
+  width: 100px;
+  height: 30px;
   margin: 0;
 }
 

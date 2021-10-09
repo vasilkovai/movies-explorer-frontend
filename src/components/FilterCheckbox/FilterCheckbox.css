@@ -3,6 +3,7 @@
   max-height: 20px;
   margin: 0 auto;
   padding: 28px 0 50px 0;
+  border-bottom: 1px solid #E8E8E8;
 }
 
 .filter__switch {
@@ -42,7 +43,7 @@
 
 .filter__checkbox:checked:before {
   right: 16px;
-  background: #2BE080;
+  background: #F5F5F5;
 }
 
 .filter__text {

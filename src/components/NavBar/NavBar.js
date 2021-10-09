@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link} from 'react-router-dom';
 import { CgMenu } from 'react-icons/cg';
 import { CgClose } from 'react-icons/cg';
-import profileIcon from './../../images/profile.png';
+import profileIcon from './../../images/profile1.svg';
 import './NavBar.css';
 
 function NavBar() {
@@ -36,7 +36,6 @@ function NavBar() {
             </div>
           </Route>
           <Link to="/profile" className="navbar__profile">
-            <p className="navbar__profile-link">Аккаунт</p>
             <img className="navbar__profile-icon" alt="Аккаунт" src={profileIcon}/>
           </Link>
         </div>
