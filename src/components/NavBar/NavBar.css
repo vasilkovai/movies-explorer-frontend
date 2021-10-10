@@ -25,6 +25,7 @@
   opacity: 1;
   right: 0;
   transition: 350ms;
+  overflow-y: auto;
 }
 
 .navbar__hamburger {
@@ -52,7 +53,6 @@
 
 .navbar__menu {
   width: 340px;
-  height: 100vh;
   background: #FFFFFF;
   display: flex;
   flex-direction: column;
@@ -141,8 +141,8 @@
 
 @media screen and (max-width: 767px) {
   .navbar__menu {
-    width: 300px;
-    padding: 144px 10px 48px 10px;
+    width: 100%;
+    padding: 144px 0 48px 0;
   }
 
   .navbar__hamburger_close {
