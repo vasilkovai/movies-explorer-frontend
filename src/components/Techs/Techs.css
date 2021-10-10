@@ -116,11 +116,7 @@
 }
 
 @media screen and (max-width: 767px) {
-  .techs {
-    background-color: #FFFFFF;
-  }
-
-  .techs__container {
+ .techs__container {
     width: calc(100% - 18px*2);
     padding: 70px 0 91px 0;
   }
