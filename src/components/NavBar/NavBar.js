@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link} from 'react-router-dom';
 import { CgMenu } from 'react-icons/cg';
 import { CgClose } from 'react-icons/cg';
-import profileIcon from './../../images/profile1.svg';
+import profileIcon from './../../images/profile2.svg';
 import './NavBar.css';
 
 function NavBar() {

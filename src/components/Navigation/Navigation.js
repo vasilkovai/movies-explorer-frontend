@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link} from 'react-router-dom';
-import profileIcon from './../../images/profile1.svg';
+import profileIcon from './../../images/profile2.svg';
 import './Navigation.css';
 
 function Navigation() {
