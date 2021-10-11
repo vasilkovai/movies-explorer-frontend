@@ -1,0 +1,136 @@
+.profile__container {
+  width: calc(1280px - 70px*2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 74px 0 70px 0;
+}
+
+.profile__title {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #000000;
+  margin: 0;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 123px 0 220px 0;
+}
+
+.profile__field {
+  width: 410px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: none;
+  margin: 0 0 17px 0;
+  padding: 0 0 16px 0;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.profile__field:last-of-type {
+  border-bottom: none;
+}
+
+.profile__field:last-of-type {
+  margin: 0;
+}
+
+.profile__label {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #000000;
+}
+
+.profile__input {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: right;
+  color: #000000;
+  border: none;
+  outline: none;
+  
+}
+
+.profile__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile__edit-btn {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  border: none;
+  margin: 0 0 16px 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+.profile__edit-btn:hover {
+  opacity: .7;
+}
+
+.profile__logout {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #FF4062;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+.profile__logout:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 1279px) {
+  .profile__container {
+    width: calc(100% - 30px*2);
+  }
+
+  .profile__form {
+    padding: 96px 0 210px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile__container {
+    width: 100%;
+    padding: 70px 0 40px 0;
+  }
+
+  .profile__form {
+    padding: 80px 0 379px 0;
+  }
+
+  .profile__field {
+    width: 260px;
+  }
+}
