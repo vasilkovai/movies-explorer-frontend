@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   margin: 0 auto;
   padding: 74px 0 70px 0;
 }
@@ -22,7 +23,7 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 123px 0 220px 0;
+  padding: 123px 0 0 0;
 }
 
 .profile__field {
@@ -70,6 +71,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 220px;
 }
 
 .profile__edit-btn {
@@ -100,7 +102,6 @@
   text-align: center;
   color: #FF4062;
   border: none;
-  margin: 0;
   padding: 0;
   cursor: pointer;
   background: transparent;
@@ -116,7 +117,11 @@
   }
 
   .profile__form {
-    padding: 96px 0 210px 0;
+    padding: 96px 0 0 0;
+  }
+
+  .profile__actions {
+    margin-top: 210px;
   }
 }
 
@@ -127,10 +132,14 @@
   }
 
   .profile__form {
-    padding: 80px 0 379px 0;
+    padding: 80px 0 0 0;
   }
 
   .profile__field {
     width: 260px;
+  }
+
+  .profile__actions {
+    margin-top: 379px;
   }
 }

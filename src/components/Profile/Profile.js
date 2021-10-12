@@ -1,15 +1,44 @@
 import React from 'react';
 import Header from '../Header/Header';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
 
-function Profile() {
+function Profile({onUpdateUser, signOut}) {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+
+  const currentUser = React.useContext(CurrentUserContext);
+
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+
+  }, [currentUser]); 
+
+  function handleChangeName(e) {
+    setName(e.target.value)
+  }
+  
+  function handleChangeEmail(e) {
+    setEmail(e.target.value)
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  
+    onUpdateUser({
+      name: name,
+      email: email,
+    });
+  }
+
   return (
     <div className="profile">
       <Header />
       <div className="profile__container">
-        <h2 className="profile__title">Привет, Ирина!</h2>
-        <div classname="profile__info">
-          <form className="profile__form">
+        <h2 className="profile__title">Привет, {currentUser.name}!</h2>
+        <div className="profile__info">
+          <form className="profile__form" onSubmit={handleSubmit}>
             <fieldset className="profile__field">
               <label className="profile__label" htmlFor="name">Имя</label>
               <input 
@@ -18,6 +47,8 @@ function Profile() {
                 name="name" 
                 type="text" 
                 autoComplete="off"
+                value={currentUser.name}
+                onChange={handleChangeName}
               />
             </fieldset>
 
@@ -29,13 +60,16 @@ function Profile() {
                 name="email" 
                 type="email" 
                 autoComplete="off"
+                value={currentUser.email}
+                onChange={handleChangeEmail}
               />
             </fieldset>
+            <div className="profile__actions">
+              <button className="profile__edit-btn">Редактировать</button>
+              
+            </div>
           </form>
-          <div className="profile__actions">
-            <button className="profile__edit-btn">Редактировать</button>
-            <button className="profile__logout">Выйти из аккаунта</button>
-          </div>
+          <button className="profile__logout" onClick={signOut}>Выйти из аккаунта</button>
         </div>
       </div>
     </div>

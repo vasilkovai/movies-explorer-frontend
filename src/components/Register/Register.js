@@ -4,7 +4,7 @@ import Logo from '../Logo/Logo';
 import '../Login/Login.css';
 import '../Header/Header.css';
 
-function Register() {
+function Register({handleRegister}) {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -56,11 +56,21 @@ function Register() {
     }
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleRegister({
+      email: email,
+      password: password,
+      name: name,
+    })
+  }
+
   return (
     <div className="login">
       <Logo />
       <p className="login__welcome">Добро пожаловать!</p>
-        <form className="login__form">
+        <form className="login__form" onSubmit={handleSubmit}>
         <fieldset className="login__field">
           <label className="login__label" htmlFor="name">Имя</label>
             <input 
@@ -102,8 +112,9 @@ function Register() {
             />
             <span className={`${passwordError ? "login__input-error" : null}`}>{passwordError}</span>
           </fieldset>
+          <button type="submit" className={`login__submit_register ${!formValid ? "login__submit_inactive" : null}`}>Зарегистрироваться</button>
         </form>
-        <button type="submit" className={`login__submit ${!formValid ? "login__submit_inactive" : null}`}>Зарегистрироваться</button>
+        
         <div className="login__redirection">
           <p className="login__point">Уже зарегистрированы?</p>
           <Link to="/signin" className="login__link">Войти</Link>

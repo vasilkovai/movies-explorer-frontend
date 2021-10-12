@@ -24,6 +24,12 @@ function Navigation() {
           <Link className="nav__page" to="/saved-movies">Сохранённые фильмы</Link>
         </div>
       </Route>
+      <Route exact path="/" >
+        <div className="nav__pages">
+          <Link className="nav__page" to="/movies">Фильмы</Link>
+          <Link className="nav__page" to="/saved-movies">Сохранённые фильмы</Link>
+        </div>
+      </Route>
       <Link to="/profile" className="nav__profile">
         <img className="navbar__profile-icon" alt="Аккаунт" src={profileIcon}/>
       </Link>

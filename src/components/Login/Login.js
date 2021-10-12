@@ -4,7 +4,7 @@ import Logo from '../Logo/Logo';
 import './Login.css';
 import '../Header/Header.css';
 
-function Login() {
+function Login({handleLogin}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState('');
@@ -42,11 +42,20 @@ function Login() {
     }
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleLogin({
+      email: email,
+      password: password
+    })
+  }
+
   return (
     <div className="login">
       <Logo />
       <p className="login__welcome">Рады видеть!</p>
-        <form className="login__form">
+        <form className="login__form" onSubmit={handleSubmit}>
           <fieldset className="login__field">
             <label className="login__label" htmlFor="email">E-mail</label>
             <input 
@@ -74,8 +83,9 @@ function Login() {
             />
             <span className={`${passwordError ? "login__input-error" : null}`}>{passwordError}</span>
           </fieldset>
+          <button type="submit" className={`login__submit ${!formValid ? "login__submit_inactive" : null}`}>Войти</button>
         </form>
-        <button type="submit" className={`login__submit ${!formValid ? "login__submit_inactive" : null}`}>Войти</button>
+        
         <div className="login__redirection">
           <p className="login__point">Ещё не зарегистрированы?</p>
           <Link to="/signup" className="login__link">Регистрация</Link>
