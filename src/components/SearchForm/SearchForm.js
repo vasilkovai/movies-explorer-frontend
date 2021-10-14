@@ -2,26 +2,32 @@ import React from 'react';
 import './SearchForm.css';
 
 function SearchForm({onSubmit}) {
-
-  const [movieValue, setMovieValue] = React.useState("");
+  const [movieValue, setMovieValue] = React.useState('');
 
   function handleMovieChange(e) {
     setMovieValue(e.target.value);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    onSubmit(movieValue);
+  }
+
   React.useEffect(() => {
-    setMovieValue("")
+    setMovieValue('')
   }, [onSubmit])
+
   return (
     <div className="search">
-      <form className="search__form">
+      <form className="search__form" onSubmit={handleSubmit}>
         <input 
           type="text"
           placeholder="Фильм"
           className="search__input"
           required
-          value={movieValue} 
           onChange={handleMovieChange}
+          value={movieValue}
         />
         <button className="search__button"></button>
       </form>

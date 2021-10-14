@@ -7,13 +7,17 @@ import MoreButton from '../MoreButton/MoreButton';
 import Footer from '../Footer/Footer'
 import './SavedMovies.css';
 
-function SavedMovies() {
+function SavedMovies({movies, onMovieDelete, message, loggedIn}) {
   return (
     <div className="saved-movies">
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <SearchForm />
       <FilterCheckbox />
-      <MoviesCardList />
+      <MoviesCardList
+        movies={movies}
+        onMovieDelete={onMovieDelete}
+        message={message}
+      />
       <MoreButton />
       <Footer />
     </div>

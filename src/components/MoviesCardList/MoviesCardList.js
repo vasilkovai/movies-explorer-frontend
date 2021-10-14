@@ -2,27 +2,25 @@ import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-function MoviesCardList() {
+function MoviesCardList({movies, message, onSaveMovie, onMovieDelete}) {
   return (
     <div className="cards">
-      <ul className="cards__list">
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-      </ul>
+      { message.searchForm ? (
+        <span className="cards__error">{message.searchForm}</span>) : (
+        <ul className="cards__list">
+          {movies.map(movie => {
+            return (
+              <MoviesCard 
+                key={movie.id} 
+                movie={movie}
+                onSaveMovie={onSaveMovie}
+                onMovieDelete={onMovieDelete}
+              />)
+              }
+            )
+          }
+        </ul>
+      )}
     </div>
   );
 }

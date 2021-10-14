@@ -3,7 +3,7 @@ import Header from '../Header/Header';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
 
-function Profile({onUpdateUser, signOut}) {
+function Profile({onUpdateUser, signOut, loggedIn}) {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
 
@@ -34,7 +34,7 @@ function Profile({onUpdateUser, signOut}) {
 
   return (
     <div className="profile">
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <div className="profile__container">
         <h2 className="profile__title">Привет, {currentUser.name}!</h2>
         <div className="profile__info">
@@ -47,7 +47,7 @@ function Profile({onUpdateUser, signOut}) {
                 name="name" 
                 type="text" 
                 autoComplete="off"
-                value={currentUser.name}
+                value={name || ''}
                 onChange={handleChangeName}
               />
             </fieldset>
@@ -60,16 +60,16 @@ function Profile({onUpdateUser, signOut}) {
                 name="email" 
                 type="email" 
                 autoComplete="off"
-                value={currentUser.email}
+                value={email || ''}
                 onChange={handleChangeEmail}
               />
             </fieldset>
             <div className="profile__actions">
-              <button className="profile__edit-btn">Редактировать</button>
-              
+              <button type="submit" className="profile__edit-btn">Редактировать</button>
+              <button type="button" className="profile__logout" onClick={signOut}>Выйти из аккаунта</button>
             </div>
           </form>
-          <button className="profile__logout" onClick={signOut}>Выйти из аккаунта</button>
+          
         </div>
       </div>
     </div>

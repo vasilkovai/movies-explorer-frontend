@@ -5,16 +5,23 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoreButton from '../MoreButton/MoreButton';
 import Footer from '../Footer/Footer'
-
 import './Movies.css';
 
-function Movies() {
+function Movies({movies, onSubmit, onSaveMovie, loggedIn, message, isLoading}) {
+
   return (
     <div className="movies">
-      <Header />
-      <SearchForm />
+      <Header loggedIn={loggedIn}/>
+      <SearchForm 
+        onSubmit={onSubmit}
+      />
       <FilterCheckbox />
-      <MoviesCardList />
+      <MoviesCardList 
+        movies={movies}
+        onSaveMovie={onSaveMovie}
+        message={message}
+        isLoading={isLoading}
+      />
       <MoreButton />
       <Footer />
     </div>

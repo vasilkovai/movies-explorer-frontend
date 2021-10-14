@@ -1,33 +1,46 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import cardImage from './../../images/film1.svg';
+import { Route, Link } from 'react-router-dom';
+import { MOVIES_URL } from '../../utils/constans';
 import './MoviesCard.css';
 
-function MoviesCard() {
+function MoviesCard({movie, onSaveMovie, onMovieDelete}) {
+  function handleSaveClick() {
+    onSaveMovie(movie);
+  }
+
+  function handleDeleteClick() {
+    onMovieDelete(movie)
+  }
+
+  function getDuration(mins) {
+    let hours = Math.trunc(mins/60);
+    let minutes = mins % 60;
+
+    return hours + 'ч' + minutes + 'м';
+  };
 
   return (
-    <div className="card">
-      <Route exact path="/movies" >
-        <img className="card__img" alt="Постер фильма" src={cardImage}/>
+    <li className="card">
+      <Link
+        to={{pathname: movie.trailerLink}}
+        target="_blank"
+        aria-label={`Открыть трейлер фильма ${movie.nameRU}`}>
+        <img className="card__img" alt="Постер фильма" src={`${MOVIES_URL}${movie.image.url}`} />
+      </Link>
         <div className="card__description"> 
           <div className="card__items">
-            <h2 className="card__title">33 слова о дизайне</h2>
-            <button className="card__save-btn"></button>
+            <h2 className="card__title">{movie.nameRU}</h2>
+            <Route exact path="/movies" >
+            <button type="button" className="card__save-btn" onClick={handleSaveClick}></button>
+            </Route>
+            <Route exact path="/saved-movies" >
+            <button type="button" className="card__save-btn_delete" onClick={handleDeleteClick}></button>
+            </Route>
           </div>
-          <p className="card__time">1ч42м</p>
+          <p className="card__time">{getDuration(movie.duration)}</p>
         </div>
-      </Route>
-      <Route exact path="/saved-movies" >
-        <img className="card__img" alt="Постер фильма" src={cardImage}/>
-        <div className="card__description"> 
-          <div className="card__items">
-            <h2 className="card__title">33 слова о дизайне</h2>
-            <button className="card__save-btn_delete"></button>
-          </div>
-          <p className="card__time">1ч42м</p>
-        </div>
-      </Route>
-    </div>
+      
+    </li>
     
   );
 }

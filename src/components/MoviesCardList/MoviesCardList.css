@@ -1,6 +1,9 @@
 .cards {
   width: calc(1280px - 70px*2);
   margin: 0 auto;
+  min-height: 517px;
+  text-align: center; 
+  padding: 70px 0 30px 0; 
 }
 
 .cards__list {
@@ -10,12 +13,24 @@
   grid-template-columns: repeat(auto-fill, 270px);
   column-gap: 20px;
   row-gap: 32px;
-  padding: 70px 0 30px 0; 
+  padding: 0;
 }
+
+.cards__error {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #A0A0A0;
+}
+
 
 @media screen and (max-width: 1279px) {
   .cards {
     width: calc(100% - 30px*2);
+    min-height: 1136px;
   }
 
   .cards__list {
@@ -28,6 +43,7 @@
 @media screen and (max-width: 767px) {
   .cards {
     width: calc(100% - 14px*2);
+    min-height: 1136px;
   }
 
   .cards__list {

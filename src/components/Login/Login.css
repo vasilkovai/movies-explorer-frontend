@@ -198,7 +198,10 @@
 
   .login__submit {
     width: 260px;
-    margin-top: 157px;
+  }
+
+  .login__submit_register {
+    width: 260px;
   }
 
   .login__point {
