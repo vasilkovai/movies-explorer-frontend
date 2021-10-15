@@ -1,5 +1,5 @@
 import { MOVIES_URL } from './constans';
-import { MAIN_URL } from './constans';
+import { MAIN_API } from './constans';
 
 class MainApi {
   constructor({baseUrl, headers}) {
@@ -108,10 +108,11 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: MAIN_URL,
+  baseUrl: MAIN_API,
   headers: {
-    Accept: "application/json",
+    'Accept': "application/json",
     'Content-Type': 'application/json',
+    "Authorization" : `Bearer ${localStorage.getItem('jwt')}`
   },
 });
 

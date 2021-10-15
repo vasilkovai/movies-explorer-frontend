@@ -9,8 +9,13 @@ function Header({loggedIn}) {
   return (
     <div className="header">
       <Logo />
-      {loggedIn ? (<Navigation />) : (<AuthHeader />)}
-      {loggedIn ? (<NavBar />) : (<AuthHeader />)}
+      {loggedIn ? 
+      (<>
+      <Navigation />
+      <NavBar />
+      </>) : 
+      (<AuthHeader />)
+      }
     </div>
   );
 }

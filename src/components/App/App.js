@@ -22,11 +22,12 @@ function App() {
     searchForm: null,
   });
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isCheckingToken, setIsCheckingToken] = React.useState(true)
   const history = useHistory(); 
   
 
   React.useEffect(() => { 
-    if (loggedIn) { 
+    if (loggedIn) {
       mainApi 
         .getUserInfo() 
         .then((user) => { 
@@ -47,28 +48,20 @@ function App() {
   }, [loggedIn])
 
   React.useEffect(() => { 
-    checkToken() 
-  }, []) 
-
-  function checkToken() { 
     const jwt = localStorage.getItem('jwt') 
     if (jwt) { 
       mainApi 
         .getUserInfo(jwt) 
         .then((res) => { 
           setLoggedIn(true) 
+          setIsCheckingToken(false)
         }) 
         .catch(error => { 
           console.error(error)
+          setIsCheckingToken(false)
         }) 
     } 
-  } 
-
-  React.useEffect(() => { 
-    if (loggedIn) { 
-      history.push('/movies')
-    } 
-  }, [history, loggedIn])
+  }, [])
 
   const handleUpdateUser = (user) => {
     mainApi
@@ -103,24 +96,9 @@ function App() {
       }) 
   }
 
-  const handleSignOut = () => {
-    mainApi
-      .signOut()
-      .then(() => {
-        localStorage.removeItem('jwt')
-        setLoggedIn(false)
-        history.push('/signin')
-      })
-      .catch(error => { 
-        console.error(error)
-      })
-  }
-
   const searchMovies = (name) => {
     const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
-    const foundMovies = beatFilmMovies.filter(
-      (c) => c.nameRU.toLowerCase().includes(name.toLowerCase()),
-    );
+    const foundMovies = beatFilmMovies.filter((c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
     if (foundMovies.length === 0) {
       setMessage({
         searchForm: 'Ничего не найдено',
@@ -160,7 +138,7 @@ function App() {
     mainApi
       .deleteSavedMovie(movie._id)
       .then(() => {
-        setSavedMovies(savedMovies.filter((movie) => movie.movieId !== movie._id))
+        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id))
       })
       .catch(error => { 
         console.error(error)
@@ -178,16 +156,30 @@ function App() {
       })
   }
 
+  const handleSignOut = () => {
+    mainApi
+      .signOut()
+      .then(() => {
+        setLoggedIn(false)
+        localStorage.removeItem('jwt')
+        history.push('/signin')
+      })
+      .catch(error => { 
+        console.error(error)
+      })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Switch>
         <Route exact path="/">
           <Main 
             loggedIn={loggedIn}
+            isCheckingToken={isCheckingToken}
           />
         </Route>
         <ProtectedRoute
-          exact path="/movies"
+          path="/movies"
           component={Movies}
           loggedIn={loggedIn}
           movies={movies}
@@ -195,21 +187,27 @@ function App() {
           onSaveMovie={handleSaveMovie}
           message={message}
           isLoading={isLoading}
+          savedMovies={savedMovies}
+          isCheckingToken={isCheckingToken}
+          onMovieDelete={handleMovieDelete}
         />
         <ProtectedRoute
-          exact path="/saved-movies"
+          path="/saved-movies"
           component={SavedMovies}
           loggedIn={loggedIn} 
           movies={savedMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
+          savedMovies={savedMovies}
+          isCheckingToken={isCheckingToken}
         />
         <ProtectedRoute
-          exact path="/profile"
+          path="/profile"
           component={Profile}
           loggedIn={loggedIn} 
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
+          isCheckingToken={isCheckingToken}
         />
         <Route path="/signin">
           <Login handleLogin={handleLogin}/>

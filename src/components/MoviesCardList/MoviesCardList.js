@@ -2,7 +2,7 @@ import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-function MoviesCardList({movies, message, onSaveMovie, onMovieDelete}) {
+function MoviesCardList({movies, message, onSaveMovie, onMovieDelete, savedMovies}) {
   return (
     <div className="cards">
       { message.searchForm ? (
@@ -11,8 +11,9 @@ function MoviesCardList({movies, message, onSaveMovie, onMovieDelete}) {
           {movies.map(movie => {
             return (
               <MoviesCard 
-                key={movie.id} 
+                key={movie.id ? movie.id : movie.movieId} 
                 movie={movie}
+                savedMovies={savedMovies}
                 onSaveMovie={onSaveMovie}
                 onMovieDelete={onMovieDelete}
               />)

@@ -12,13 +12,13 @@ function Navigation() {
           <Link className="nav__page" to="/saved-movies">Сохранённые фильмы</Link>
         </div>
       </Route>
-      <Route exact path="/saved-movies" >
+      <Route path="/saved-movies" >
         <div className="nav__pages">
           <Link className="nav__page" to="/movies">Фильмы</Link>
           <Link className="nav__page_active" to="/saved-movies">Сохранённые фильмы</Link>
         </div>
       </Route>
-      <Route exact path="/profile" >
+      <Route path="/profile" >
         <div className="nav__pages">
           <Link className="nav__page" to="/movies">Фильмы</Link>
           <Link className="nav__page" to="/saved-movies">Сохранённые фильмы</Link>
