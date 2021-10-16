@@ -21,11 +21,18 @@ function App() {
   const [message, setMessage] = React.useState({
     searchForm: null,
   });
+  const [amountCards, setAmountCards] = React.useState({
+    startCards: 0,
+    rowCards: 0,
+    moreCards: 0,
+  });
+  const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isCheckingToken, setIsCheckingToken] = React.useState(true)
+  const [isCheckingToken, setIsCheckingToken] = React.useState(true);
+  const [isShortMovies, setIsShortMovies] = React.useState(false);
   const history = useHistory(); 
   
-
+  // get user content
   React.useEffect(() => { 
     if (loggedIn) {
       mainApi 
@@ -63,15 +70,7 @@ function App() {
     } 
   }, [])
 
-  const handleUpdateUser = (user) => {
-    mainApi
-      .setUserInfo(user)
-      .then((user) => {
-        setCurrentUser(user.data)
-      })
-      .catch(error => console.log(error))
-  }
-
+  // auth
   const handleRegister = ({name, password, email}) => { 
     mainApi 
       .register(name, password, email) 
@@ -96,6 +95,30 @@ function App() {
       }) 
   }
 
+  const handleSignOut = () => {
+    mainApi
+      .signOut()
+      .then(() => {
+        setLoggedIn(false)
+        localStorage.clear()
+        history.push('/signin')
+      })
+      .catch(error => { 
+        console.error(error)
+      })
+  }
+
+  // edit profile
+  const handleUpdateUser = (user) => {
+    mainApi
+      .setUserInfo(user)
+      .then((user) => {
+        setCurrentUser(user.data)
+      })
+      .catch(error => console.log(error))
+    }
+
+  // get movies
   const searchMovies = (name) => {
     const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
     const foundMovies = beatFilmMovies.filter((c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
@@ -134,17 +157,65 @@ function App() {
     }
   };
 
-  const handleMovieDelete = (movie) => {
-    mainApi
-      .deleteSavedMovie(movie._id)
-      .then(() => {
-        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id))
-      })
-      .catch(error => { 
-        console.error(error)
-      })
+  // checkbox
+  const filterMovies = !isShortMovies ? movies : movies.filter(
+    (movie) => movie.duration <= 40,
+  )
+
+  const filterSavedMovies = !isShortMovies ? savedMovies : savedMovies.filter(
+    (movie) => movie.duration <= 40,
+  )
+
+  function handleShortMovies() {
+    if (!isShortMovies) {
+      setIsShortMovies(true)
+    } else {
+      setIsShortMovies(false);
+    }
   }
 
+  // show "more" cards
+  React.useEffect(() => {
+    limitAmountCards();
+  }, []);
+
+  function limitAmountCards() {
+    const viewportWidth = window.screen.width;
+    if (viewportWidth < 767 ) {
+      setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
+    } else if (viewportWidth < 1200) {
+      setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
+    } else {
+      setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
+    }
+  }
+
+  const handleMoreBtn = () => {
+    return setAmountCards({
+      ...amountCards,
+      startCards: amountCards.startCards + amountCards.moreCards,
+    });
+  };
+
+  function loadMoreBtnVisible() {
+    if (filterMovies.length > amountCards.startCards) {
+      setMoreBtnVisibility(true);
+    } else {
+      setMoreBtnVisibility(false);
+    }
+  }
+
+  React.useEffect(() => {
+    loadMoreBtnVisible();
+  }, [filterMovies, amountCards]);
+
+  window.addEventListener("resize", function () {
+    setTimeout(() => {
+      limitAmountCards();
+    }, 250);
+  });
+
+  // save/delete movies
   const handleSaveMovie= (movie) => {
     mainApi
       .saveMovie(movie)
@@ -156,13 +227,11 @@ function App() {
       })
   }
 
-  const handleSignOut = () => {
+  const handleMovieDelete = (movie) => {
     mainApi
-      .signOut()
+      .deleteSavedMovie(movie._id)
       .then(() => {
-        setLoggedIn(false)
-        localStorage.removeItem('jwt')
-        history.push('/signin')
+        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id))
       })
       .catch(error => { 
         console.error(error)
@@ -182,7 +251,7 @@ function App() {
           path="/movies"
           component={Movies}
           loggedIn={loggedIn}
-          movies={movies}
+          movies={filterMovies}
           onSubmit={handleSearchMovies}
           onSaveMovie={handleSaveMovie}
           message={message}
@@ -190,16 +259,23 @@ function App() {
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
           onMovieDelete={handleMovieDelete}
+          showShortMovies={handleShortMovies}
+          isShortMovies={isShortMovies}
+          onMoreBtn={handleMoreBtn}
+          moreBtnVisibility={moreBtnVisibility}
         />
         <ProtectedRoute
           path="/saved-movies"
           component={SavedMovies}
           loggedIn={loggedIn} 
-          movies={savedMovies}
+          movies={filterSavedMovies}
+          onSubmit={handleSearchMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
+          showShortMovies={handleShortMovies}
+          isShortMovies={isShortMovies}
         />
         <ProtectedRoute
           path="/profile"

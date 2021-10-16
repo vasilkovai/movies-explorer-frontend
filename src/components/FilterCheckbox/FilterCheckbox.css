@@ -7,9 +7,11 @@
 }
 
 .filter__switch {
+  max-width: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 }
 
 .filter__checkbox {
@@ -17,7 +19,7 @@
   width: 36px;
   height: 20px;
   appearance: none;
-  background: #2BE080;
+  background: #EBEBEB;
   outline: none;
   border-radius: 20px;
   transition: .5s;
@@ -26,7 +28,7 @@
 }
 
 .filter__checkbox:checked {
-  background: #EBEBEB;
+  background: #2BE080;
 }
 
 .filter__checkbox:before {
@@ -36,13 +38,13 @@
   height: 16px;
   border-radius: 8px;
   bottom: 2px;
-  right: 2px;
+  left: 2px;
   background: #F9F9F9;
   transition: .5s;
 }
 
 .filter__checkbox:checked:before {
-  right: 16px;
+  left: 18px;
   background: #F5F5F5;
 }
 
@@ -63,7 +65,7 @@
 
 @media screen and (max-width: 1279px) {
   .filter {
-    width: calc(768px - 30px*2);
+    width: calc(100% - 30px*2);
   }
 }
 

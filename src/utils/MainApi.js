@@ -81,18 +81,24 @@ class MainApi {
       headers: this._headers,
       credentials: 'include',
       body: JSON.stringify({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
-        image: `${MOVIES_URL}${movie.image.url}`,
-        trailer: movie.trailerLink,
-        thumbnail: `${MOVIES_URL}${movie.image.formats.thumbnail.url}`,
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
-        movieId: movie.id,
-      }),
+        country: movie.country ? movie.country : "Страна не указана",
+          director: movie.director ? movie.director : "Режиссёр не указан",
+          duration: movie.duration,
+          year: movie.year ? movie.year : "Год не указан",
+          description: movie.description
+            ? movie.description
+            : "Описание фильма отсутствует",
+          image: `${MOVIES_URL}${movie.image.url}`,
+          trailer: movie.trailerLink ? movie.trailerLink : "https://youtube.ru",
+          thumbnail: movie.image.formats.thumbnail.url
+            ? `${MOVIES_URL}${movie.image.formats.thumbnail.url}`
+            : "Параметр не указан",
+          movieId: movie.id,
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN
+            ? movie.nameEN
+            : "Англоязычное название не указано",
+        }),
     })
     .then(this._checkStatus)
   }

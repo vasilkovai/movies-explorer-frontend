@@ -7,12 +7,26 @@ import MoreButton from '../MoreButton/MoreButton';
 import Footer from '../Footer/Footer'
 import './SavedMovies.css';
 
-function SavedMovies({movies, onMovieDelete, message, loggedIn, savedMovies}) {
+function SavedMovies({
+  movies, 
+  onMovieDelete, 
+  message, 
+  loggedIn, 
+  savedMovies, 
+  isShortMovies, 
+  showShortMovies,
+  onSubmit
+}) {
   return (
     <div className="saved-movies">
       <Header loggedIn={loggedIn}/>
-      <SearchForm />
-      <FilterCheckbox />
+      <SearchForm 
+        onSubmit={onSubmit}
+      />
+      <FilterCheckbox 
+        isShortMovies={isShortMovies}
+        showShortMovies={showShortMovies}
+      />
       <MoviesCardList
         movies={movies}
         onMovieDelete={onMovieDelete}

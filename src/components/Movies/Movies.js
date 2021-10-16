@@ -17,9 +17,12 @@ function Movies({
   isLoading,
   savedMovies,
   onMovieDelete,
+  showShortMovies,
+  isShortMovies,
+  onMoreBtn,
+  moreBtnVisibility,
 }) {
   
-
   return (
     <div className="movies">
       <Header 
@@ -29,6 +32,8 @@ function Movies({
         onSubmit={onSubmit}
       />
       <FilterCheckbox 
+      showShortMovies={showShortMovies}
+      isShortMovies={isShortMovies}
       />
       {isLoading ? 
         (<Preloader />) :
@@ -40,7 +45,10 @@ function Movies({
           onMovieDelete={onMovieDelete}
         />)
       }
-      <MoreButton movies={movies}/>
+      <MoreButton 
+        onMoreBtn={onMoreBtn}
+        isVisible={moreBtnVisibility}
+      />
       <Footer />
     </div>
   );

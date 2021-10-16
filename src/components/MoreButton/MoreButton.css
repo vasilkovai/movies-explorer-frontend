@@ -8,6 +8,10 @@
   display: none;
 }
 
+.more_active {
+  display: flex;
+}
+
 .more-btn {
   width: calc(1280px - 70px*2);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
