@@ -21,12 +21,12 @@ function App() {
   const [message, setMessage] = React.useState({
     searchForm: null,
   });
-  const [amountCards, setAmountCards] = React.useState({
-    startCards: 0,
-    rowCards: 0,
-    moreCards: 0,
-  });
-  const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
+  // const [amountCards, setAmountCards] = React.useState({
+  //   startCards: 0,
+  //   rowCards: 0,
+  //   moreCards: 0,
+  // });
+  // const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
   const [isShortMovies, setIsShortMovies] = React.useState(false);
@@ -175,45 +175,45 @@ function App() {
   }
 
   // show "more" cards
-  React.useEffect(() => {
-    limitAmountCards();
-  }, []);
+  // React.useEffect(() => {
+  //   limitAmountCards();
+  // }, []);
 
-  function limitAmountCards() {
-    const viewportWidth = window.screen.width;
-    if (viewportWidth < 767 ) {
-      setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
-    } else if (viewportWidth < 1200) {
-      setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
-    } else {
-      setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
-    }
-  }
+  // function limitAmountCards() {
+  //   const viewportWidth = window.screen.width;
+  //   if (viewportWidth < 767 ) {
+  //     setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
+  //   } else if (viewportWidth < 1200) {
+  //     setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
+  //   } else {
+  //     setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
+  //   }
+  // }
 
-  const handleMoreBtn = () => {
-    return setAmountCards({
-      ...amountCards,
-      startCards: amountCards.startCards + amountCards.moreCards,
-    });
-  };
+  // const handleMoreBtn = () => {
+  //   return setAmountCards({
+  //     ...amountCards,
+  //     startCards: amountCards.startCards + amountCards.moreCards,
+  //   });
+  // };
 
-  function loadMoreBtnVisible() {
-    if (filterMovies.length > amountCards.startCards) {
-      setMoreBtnVisibility(true);
-    } else {
-      setMoreBtnVisibility(false);
-    }
-  }
+  // function moreBtnVisible() {
+  //   if (filterMovies.length > amountCards.startCards) {
+  //     setMoreBtnVisibility(true);
+  //   } else {
+  //     setMoreBtnVisibility(false);
+  //   }
+  // }
 
-  React.useEffect(() => {
-    loadMoreBtnVisible();
-  }, [filterMovies, amountCards]);
+  // // React.useEffect(() => {
+  // //   moreBtnVisible();
+  // // }, [filterMovies, amountCards]);
 
-  window.addEventListener("resize", function () {
-    setTimeout(() => {
-      limitAmountCards();
-    }, 250);
-  });
+  // window.addEventListener("resize", function () {
+  //   setTimeout(() => {
+  //     limitAmountCards();
+  //   }, 250);
+  // });
 
   // save/delete movies
   const handleSaveMovie= (movie) => {
@@ -261,8 +261,8 @@ function App() {
           onMovieDelete={handleMovieDelete}
           showShortMovies={handleShortMovies}
           isShortMovies={isShortMovies}
-          onMoreBtn={handleMoreBtn}
-          moreBtnVisibility={moreBtnVisibility}
+          // onMoreBtn={handleMoreBtn}
+          // moreBtnVisibility={moreBtnVisibility}
         />
         <ProtectedRoute
           path="/saved-movies"
