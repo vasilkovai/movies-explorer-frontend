@@ -17,7 +17,7 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
             <Footer />
           </Route>
         </div>
-      : <Redirect to="/movies" />
+      : <Redirect to="/" />
       }
     </Route>
   );
