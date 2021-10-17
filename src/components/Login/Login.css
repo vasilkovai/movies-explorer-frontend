@@ -53,7 +53,7 @@
   color: #000000;
   border: none;
   border-bottom: 1px solid #FFF;
-  margin: 0 0 24px 0;
+  margin: 0 0 32px 0;
   padding: 0 0 10px 0;
   outline: none;
   border-bottom: 1px solid #E8E8E8;
@@ -86,7 +86,7 @@
   display: block;
   box-sizing: border-box;
   position: absolute;
-  top: calc(100% - 19px);
+  top: calc(100% - 26px);
   left: 0;
   transition: opacity .3s;
 }
@@ -170,6 +170,15 @@
 
 .login__link:hover {
   opacity: .7;
+}
+
+.login__request-error {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF4062;
 }
 
 @media screen and (max-width: 1279px) {

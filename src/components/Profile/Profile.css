@@ -64,7 +64,7 @@
   color: #000000;
   border: none;
   outline: none;
-  
+  background-color: #FFF;
 }
 
 .profile__actions {
@@ -109,6 +109,15 @@
 
 .profile__logout:hover {
   opacity: .7;
+}
+
+.profile__request-error {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF4062;
 }
 
 @media screen and (max-width: 1279px) {

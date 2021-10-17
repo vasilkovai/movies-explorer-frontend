@@ -5,7 +5,6 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Preloader from '../Preloader/Preloader'
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoreButton from '../MoreButton/MoreButton';
-import Footer from '../Footer/Footer'
 import './Movies.css';
 
 function Movies({
@@ -21,6 +20,7 @@ function Movies({
   isShortMovies,
   onMoreBtn,
   moreBtnVisibility,
+  amount,
 }) {
   
   return (
@@ -43,13 +43,13 @@ function Movies({
           onSaveMovie={onSaveMovie}
           savedMovies={savedMovies}
           onMovieDelete={onMovieDelete}
+          amount={amount}
         />)
       }
       <MoreButton 
         onMoreBtn={onMoreBtn}
         isVisible={moreBtnVisibility}
       />
-      <Footer />
     </div>
   );
 }

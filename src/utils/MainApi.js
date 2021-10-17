@@ -8,11 +8,9 @@ class MainApi {
   }
 
   _checkStatus(res) {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Что-то пошло не так: ${res.status}`);
-    }
+    return res.ok
+     ? res.json() 
+     : Promise.reject(`${res.status}`);
   }
 
   register(name, password, email) {

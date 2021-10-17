@@ -4,7 +4,6 @@ import SearchForm from '../SearchForm/SearchForm';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoreButton from '../MoreButton/MoreButton';
-import Footer from '../Footer/Footer'
 import './SavedMovies.css';
 
 function SavedMovies({
@@ -15,7 +14,10 @@ function SavedMovies({
   savedMovies, 
   isShortMovies, 
   showShortMovies,
-  onSubmit
+  onSubmit,
+  onMoreBtn,
+  moreBtnVisibility,
+  amount,
 }) {
   return (
     <div className="saved-movies">
@@ -32,9 +34,12 @@ function SavedMovies({
         onMovieDelete={onMovieDelete}
         message={message}
         savedMovies={savedMovies}
+        amount={amount}
       />
-      <MoreButton />
-      <Footer />
+      <MoreButton 
+        onMoreBtn={onMoreBtn}
+        isVisible={moreBtnVisibility}
+      />
     </div>
   );
 }

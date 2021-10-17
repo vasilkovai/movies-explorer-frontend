@@ -1,6 +1,7 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import Preloader from '../Preloader/Preloader';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -18,19 +19,20 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [message, setMessage] = React.useState({
-    searchForm: null,
-  });
-  // const [amountCards, setAmountCards] = React.useState({
-  //   startCards: 0,
-  //   rowCards: 0,
-  //   moreCards: 0,
-  // });
-  // const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
+  const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
   const [isShortMovies, setIsShortMovies] = React.useState(false);
-  const history = useHistory(); 
+  const [message, setMessage] = React.useState({
+    searchForm: null,
+  });
+  const [amountCards, setAmountCards] = React.useState({
+    startCards: 0,
+    rowCards: 0,
+    moreCards: 0,
+  });
+  const [isRequestStatus, setIsRequestStatus] = React.useState('');
+  const history = useHistory();
   
   // get user content
   React.useEffect(() => { 
@@ -47,12 +49,20 @@ function App() {
         .getSavedMovies()
         .then((movie) => { 
           setSavedMovies(movie.data)
+          localStorage.setItem('savedMovies', JSON.stringify(movie.data));
         })
         .catch(error => { 
           console.error(error)
         })
     }
   }, [loggedIn])
+
+  React.useEffect(() => {
+    const localMovies = JSON.parse(localStorage.getItem('foundMovies'));
+    if (localMovies !== null && loggedIn) {
+      setMovies(localMovies);
+    }
+  }, [loggedIn]);
 
   React.useEffect(() => { 
     const jwt = localStorage.getItem('jwt') 
@@ -65,7 +75,7 @@ function App() {
         }) 
         .catch(error => { 
           console.error(error)
-          setIsCheckingToken(false)
+          setIsCheckingToken(false);
         }) 
     } 
   }, [])
@@ -77,8 +87,12 @@ function App() {
       .then(() => { 
         history.push('/signin')
       })
-      .catch(error => { 
-        console.log(error) 
+      .catch((err) => { 
+        if (err === '409') {
+          setIsRequestStatus('Пользователь с таким email уже существует.');
+        } else {
+          setIsRequestStatus('При регистрации профиля произошла ошибка.');
+        }
       })   
   } 
 
@@ -90,9 +104,15 @@ function App() {
         localStorage.setItem('jwt', res.token) 
         history.push('/movies') 
       }) 
-      .catch(error => { 
-        console.log(error) 
-      }) 
+      .catch((err) => { 
+        if (err === '401') {
+          setIsRequestStatus('Вы ввели неправильный логин или пароль.');
+        } else if (err === '400') {
+          setIsRequestStatus('Введите корректные данные.');
+        } else {
+          setIsRequestStatus('При авторизации произошла ошибка.');
+        }
+      })
   }
 
   const handleSignOut = () => {
@@ -100,7 +120,7 @@ function App() {
       .signOut()
       .then(() => {
         setLoggedIn(false)
-        localStorage.clear()
+        localStorage.removeItem('jwt')
         history.push('/signin')
       })
       .catch(error => { 
@@ -115,10 +135,16 @@ function App() {
       .then((user) => {
         setCurrentUser(user.data)
       })
-      .catch(error => console.log(error))
+      .catch((err) => { 
+        if (err === '409') {
+          setIsRequestStatus('Пользователь с таким email уже существует.');
+        } else {
+          setIsRequestStatus('При обновлении профиля произошла ошибка.');
+        }
+      })
     }
 
-  // get movies
+  // search movies
   const searchMovies = (name) => {
     const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
     const foundMovies = beatFilmMovies.filter((c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
@@ -157,6 +183,22 @@ function App() {
     }
   };
 
+  const handleSearchSavedMovies = (name) => {
+    const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
+    const foundSavedMovies = savedMovies.filter(
+      (c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
+    if (foundSavedMovies.length === 0) {
+      setMessage({
+        searchForm: 'Ничего не найдено',
+      });
+    } else {
+      setSavedMovies(foundSavedMovies);
+      setMessage({
+        searchForm: '',
+      });
+    }
+  }
+
   // checkbox
   const filterMovies = !isShortMovies ? movies : movies.filter(
     (movie) => movie.duration <= 40,
@@ -175,45 +217,49 @@ function App() {
   }
 
   // show "more" cards
-  // React.useEffect(() => {
-  //   limitAmountCards();
-  // }, []);
+  React.useEffect(() => {
+    limitAmountCards();
+  }, []);
 
-  // function limitAmountCards() {
-  //   const viewportWidth = window.screen.width;
-  //   if (viewportWidth < 767 ) {
-  //     setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
-  //   } else if (viewportWidth < 1200) {
-  //     setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
-  //   } else {
-  //     setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
-  //   }
-  // }
+  function limitAmountCards() {
+    const viewportWidth = window.screen.width;
+    if (viewportWidth <= 480 ) {
+      setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
+    } else if (viewportWidth <= 768) {
+      setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
+    } else {
+      setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
+    }
+  }
 
-  // const handleMoreBtn = () => {
-  //   return setAmountCards({
-  //     ...amountCards,
-  //     startCards: amountCards.startCards + amountCards.moreCards,
-  //   });
-  // };
+  const handleMoreBtn = () => {
+    return setAmountCards({
+      ...amountCards,
+      startCards: amountCards.startCards + amountCards.moreCards,
+    });
+  };
 
-  // function moreBtnVisible() {
-  //   if (filterMovies.length > amountCards.startCards) {
-  //     setMoreBtnVisibility(true);
-  //   } else {
-  //     setMoreBtnVisibility(false);
-  //   }
-  // }
+  React.useEffect(() => { 
+    if (filterMovies.length > amountCards.startCards) {
+      setMoreBtnVisibility(true);
+    } else {
+      setMoreBtnVisibility(false);
+    }
+  }, [filterMovies, amountCards])
 
-  // // React.useEffect(() => {
-  // //   moreBtnVisible();
-  // // }, [filterMovies, amountCards]);
+  React.useEffect(() => { 
+    if (filterSavedMovies.length > amountCards.startCards) {
+      setMoreBtnVisibility(true);
+    } else {
+      setMoreBtnVisibility(false);
+    }
+  }, [filterSavedMovies, amountCards])
 
-  // window.addEventListener("resize", function () {
-  //   setTimeout(() => {
-  //     limitAmountCards();
-  //   }, 250);
-  // });
+  window.addEventListener("resize", function () {
+    setTimeout(() => {
+      limitAmountCards();
+    }, 250);
+  });
 
   // save/delete movies
   const handleSaveMovie= (movie) => {
@@ -221,6 +267,7 @@ function App() {
       .saveMovie(movie)
       .then((newMovie) => {
         setSavedMovies([newMovie.data, ...savedMovies])
+        localStorage.setItem('savedMovies', JSON.stringify([newMovie.data, ...savedMovies]));
       })
       .catch(error => { 
         console.error(error)
@@ -228,10 +275,15 @@ function App() {
   }
 
   const handleMovieDelete = (movie) => {
+    const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     mainApi
       .deleteSavedMovie(movie._id)
       .then(() => {
-        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id))
+        setSavedMovies((state) => state.filter((c) => c._id !== movie._id));
+        const newSavedMovies = savedMovies.filter(
+          (c) => c._id !== movie._id,
+        );
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
       })
       .catch(error => { 
         console.error(error)
@@ -261,21 +313,25 @@ function App() {
           onMovieDelete={handleMovieDelete}
           showShortMovies={handleShortMovies}
           isShortMovies={isShortMovies}
-          // onMoreBtn={handleMoreBtn}
-          // moreBtnVisibility={moreBtnVisibility}
+          onMoreBtn={handleMoreBtn}
+          moreBtnVisibility={moreBtnVisibility}
+          amount={amountCards.startCards}
         />
         <ProtectedRoute
           path="/saved-movies"
           component={SavedMovies}
           loggedIn={loggedIn} 
           movies={filterSavedMovies}
-          onSubmit={handleSearchMovies}
+          onSubmit={handleSearchSavedMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
           showShortMovies={handleShortMovies}
           isShortMovies={isShortMovies}
+          onMoreBtn={handleMoreBtn}
+          moreBtnVisibility={moreBtnVisibility}
+          amount={amountCards.startCards}
         />
         <ProtectedRoute
           path="/profile"
@@ -284,12 +340,25 @@ function App() {
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
           isCheckingToken={isCheckingToken}
+          errorMessage={isRequestStatus}
         />
         <Route path="/signin">
-          <Login handleLogin={handleLogin}/>
+          {isCheckingToken ? (
+            <Preloader isCheckingToken={isCheckingToken} />
+          ) : loggedIn ? (
+            <Redirect to="/movies" />
+          ) : (
+            <Login 
+              handleLogin={handleLogin}
+              errorMessage={isRequestStatus}
+            />
+          )}
         </Route>
         <Route path="/signup">
-          <Register handleRegister={handleRegister}/>
+          <Register 
+            handleRegister={handleRegister}
+            errorMessage={isRequestStatus}
+            />
         </Route>
         <Route path="*">
           <PageNotFound />

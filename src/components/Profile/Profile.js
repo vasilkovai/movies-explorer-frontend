@@ -2,34 +2,36 @@ import React from 'react';
 import Header from '../Header/Header';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
+import '../Login/Login.css';
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 
-function Profile({onUpdateUser, signOut, loggedIn}) {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
+function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
+  const [isEdit, setIsEdit] = React.useState(false)
 
   const currentUser = React.useContext(CurrentUserContext);
 
+  const { values, setValues, handleChange, resetForm, isValid } =
+    useFormWithValidation();
+  const { name, email } = values;
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (currentUser.name !== name || currentUser.email !== email) {
+      onUpdateUser({ name, email });
+    }
+    setIsEdit(false)
+  };
+
   React.useEffect(() => {
-    setName(currentUser.name);
-    setEmail(currentUser.email);
-
-  }, [currentUser]); 
-
-  function handleChangeName(e) {
-    setName(e.target.value)
-  }
-  
-  function handleChangeEmail(e) {
-    setEmail(e.target.value)
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-  
-    onUpdateUser({
-      name: name,
-      email: email,
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email,
     });
+  }, [setValues, currentUser]);
+
+  function handleEditClick() {
+    resetForm(currentUser, {}, false);
+    setIsEdit(true)
   }
 
   return (
@@ -47,8 +49,10 @@ function Profile({onUpdateUser, signOut, loggedIn}) {
                 name="name" 
                 type="text" 
                 autoComplete="off"
-                value={name || ''}
-                onChange={handleChangeName}
+                value={values.name || ''}
+                onChange={handleChange}
+                disabled={!isEdit}
+                required
               />
             </fieldset>
 
@@ -60,14 +64,28 @@ function Profile({onUpdateUser, signOut, loggedIn}) {
                 name="email" 
                 type="email" 
                 autoComplete="off"
-                value={email || ''}
-                onChange={handleChangeEmail}
+                value={values.email || ''}
+                onChange={handleChange}
+                disabled={!isEdit}
+                required
               />
             </fieldset>
-            <div className="profile__actions">
-              <button type="submit" className="profile__edit-btn">Редактировать</button>
-              <button type="button" className="profile__logout" onClick={signOut}>Выйти из аккаунта</button>
-            </div>
+            <span className="profile__request-error">{errorMessage}</span>
+            { isEdit ? (
+              <button 
+                type="submit" 
+                className={`login__submit ${!isValid && "login__submit_inactive"}`}
+                disabled={!isValid && true}
+              >Сохранить
+              </button>
+            ) : 
+            (
+              <div className="profile__actions">
+                <button onClick={handleEditClick} type="submit" className="profile__edit-btn">Редактировать</button>
+                <button type="button" className="profile__logout" onClick={signOut}>Выйти из аккаунта</button>
+              </div>
+            )
+            }
           </form>
           
         </div>

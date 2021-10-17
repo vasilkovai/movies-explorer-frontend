@@ -49,6 +49,11 @@
     padding: 20px;
 }
 
+.preloader_active {
+  position: absolute;
+  top:20%;
+}
+
 .preloader__container {
     width: 100px;
     height: 100px;
