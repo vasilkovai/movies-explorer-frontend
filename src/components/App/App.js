@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import Preloader from '../Preloader/Preloader';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -295,7 +294,6 @@ function App() {
         <Route exact path="/">
           <Main 
             loggedIn={loggedIn}
-            isCheckingToken={isCheckingToken}
           />
         </Route>
         <ProtectedRoute
@@ -338,13 +336,10 @@ function App() {
           loggedIn={loggedIn} 
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
-          isCheckingToken={isCheckingToken}
           errorMessage={isRequestStatus}
         />
         <Route path="/signin">
-          {isCheckingToken ? (
-            <Preloader isCheckingToken={isCheckingToken} />
-          ) : loggedIn ? (
+          {loggedIn ? (
             <Redirect to="/" />
           ) : (
             <Login 
@@ -354,9 +349,7 @@ function App() {
           )}
         </Route>
         <Route path="/signup">
-        {isCheckingToken ? (
-            <Preloader isCheckingToken={isCheckingToken} />
-          ) : loggedIn ? (
+        {loggedIn ? (
             <Redirect to="/" />
           ) : (
           <Register 
