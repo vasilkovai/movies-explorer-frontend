@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-// import Preloader from '../Preloader/Preloader';
+import Preloader from '../Preloader/Preloader';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -21,7 +21,7 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  // const [isCheckingToken, setIsCheckingToken] = React.useState(true);
+  const [isCheckingToken, setIsCheckingToken] = React.useState(true);
   const [isShortMovies, setIsShortMovies] = React.useState(false);
   const [message, setMessage] = React.useState({
     searchForm: null,
@@ -71,6 +71,7 @@ function App() {
         .getUserInfo(jwt) 
         .then((res) => { 
           setLoggedIn(true) 
+          setIsCheckingToken(false)
         }) 
         .catch(error => { 
           console.error(error)
@@ -221,9 +222,9 @@ function App() {
 
   function limitAmountCards() {
     const viewportWidth = window.screen.width;
-    if (viewportWidth <= 480 ) {
+    if (viewportWidth < 767 ) {
       setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
-    } else if (viewportWidth <= 768) {
+    } else if (viewportWidth < 1200) {
       setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
     } else {
       setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
@@ -294,6 +295,7 @@ function App() {
         <Route exact path="/">
           <Main 
             loggedIn={loggedIn}
+            isCheckingToken={isCheckingToken}
           />
         </Route>
         <ProtectedRoute
@@ -306,6 +308,7 @@ function App() {
           message={message}
           isLoading={isLoading}
           savedMovies={savedMovies}
+          isCheckingToken={isCheckingToken}
           onMovieDelete={handleMovieDelete}
           showShortMovies={handleShortMovies}
           isShortMovies={isShortMovies}
@@ -322,6 +325,7 @@ function App() {
           onMovieDelete={handleMovieDelete}
           message={message}
           savedMovies={savedMovies}
+          isCheckingToken={isCheckingToken}
           showShortMovies={handleShortMovies}
           isShortMovies={isShortMovies}
           onMoreBtn={handleMoreBtn}
@@ -334,19 +338,32 @@ function App() {
           loggedIn={loggedIn} 
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
+          isCheckingToken={isCheckingToken}
           errorMessage={isRequestStatus}
         />
         <Route path="/signin">
-          <Login 
-            handleLogin={handleLogin}
-            errorMessage={isRequestStatus}
-          />
+          {isCheckingToken ? (
+            <Preloader isCheckingToken={isCheckingToken} />
+          ) : loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Login 
+              handleLogin={handleLogin}
+              errorMessage={isRequestStatus}
+            />
+          )}
         </Route>
         <Route path="/signup">
+        {isCheckingToken ? (
+            <Preloader isCheckingToken={isCheckingToken} />
+          ) : loggedIn ? (
+            <Redirect to="/" />
+          ) : (
           <Register 
             handleRegister={handleRegister}
             errorMessage={isRequestStatus}
             />
+          )}
         </Route>
         <Route path="*">
           <PageNotFound />
