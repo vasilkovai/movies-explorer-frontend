@@ -219,7 +219,7 @@ function App() {
   }, []);
 
   function limitAmountCards() {
-    const viewportWidth = window.screen.width;
+    const viewportWidth = window.innerWidth;
     if (viewportWidth < 767 ) {
       setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
     } else if (viewportWidth < 1200) {
