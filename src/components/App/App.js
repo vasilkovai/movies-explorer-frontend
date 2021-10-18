@@ -64,19 +64,18 @@ function App() {
   }, [loggedIn]);
 
   React.useEffect(() => { 
-    const jwt = localStorage.getItem('jwt') 
-    if (jwt) { 
       mainApi 
-        .getUserInfo(jwt) 
+        .getUserInfo() 
         .then((res) => { 
           setLoggedIn(true) 
-          setIsCheckingToken(false)
         }) 
         .catch(error => { 
           console.error(error)
         }) 
-    } 
-  }, [])
+        .finally(() => {
+          setIsCheckingToken(false);
+        })
+  }, [loggedIn])
 
   // auth
   const handleRegister = ({name, password, email}) => { 
@@ -339,24 +338,22 @@ function App() {
           errorMessage={isRequestStatus}
         />
         <Route path="/signin">
-          {loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Login 
+          {loggedIn 
+            ? <Redirect to="/" />
+            : <Login 
               handleLogin={handleLogin}
               errorMessage={isRequestStatus}
             />
-          )}
+          }
         </Route>
         <Route path="/signup">
-        {loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-          <Register 
+        {loggedIn 
+            ? <Redirect to="/" />
+            : <Register 
             handleRegister={handleRegister}
             errorMessage={isRequestStatus}
             />
-          )}
+          }
         </Route>
         <Route path="*">
           <PageNotFound />
