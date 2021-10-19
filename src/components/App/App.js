@@ -13,13 +13,11 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MovieApi';
 
-
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
   const [message, setMessage] = React.useState({
@@ -259,6 +257,7 @@ function App() {
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
           errorMessage={isRequestStatus}
+          isCheckingToken={isCheckingToken}
         />
         <Route path="/signin">
           {loggedIn 

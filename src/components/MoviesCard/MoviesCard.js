@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { MOVIES_URL } from '../../utils/constans';
 import './MoviesCard.css';
+import getDuration from '../../utils/getDuration';
 
 function MoviesCard({movie, onSaveMovie, onMovieDelete, savedMovies}) {
 
@@ -22,13 +23,6 @@ function MoviesCard({movie, onSaveMovie, onMovieDelete, savedMovies}) {
   function handleDeleteClick() {
     onMovieDelete(movie)
   }
-
-  function getDuration(mins) {
-    let hours = Math.trunc(mins/60);
-    let minutes = mins % 60;
-
-    return hours + 'ч' + minutes + 'м';
-  };
 
   return (
     <li className="card">

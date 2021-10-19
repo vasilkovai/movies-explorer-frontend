@@ -10,7 +10,7 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
 
   const currentUser = React.useContext(CurrentUserContext);
 
-  const { values, setValues, handleChange, resetForm, isValid } =
+  const { values, setValues, handleChange, resetForm, isValid, errors } =
     useFormWithValidation();
   const { name, email } = values;
 
@@ -56,6 +56,7 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
                 minLength="2"
                 maxLength="30"
               />
+              <span className={`${errors.name ? "profile__input-error" : null}`}>{errors.name}</span>
             </fieldset>
 
             <fieldset className="profile__field">
@@ -71,6 +72,7 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
                 disabled={!isEdit}
                 required
               />
+              <span className={`${errors.email ? "profile__input-error" : null}`}>{errors.email}</span>
             </fieldset>
             <span className="profile__request-error">{errorMessage}</span>
             { isEdit ? (
