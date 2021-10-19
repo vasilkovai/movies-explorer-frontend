@@ -11,6 +11,10 @@
   column-gap: 10px;
 }
 
+.search__label {
+  width: 100%;
+}
+
 .search__input {
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-style: normal;
@@ -42,6 +46,16 @@
 
 .search__button:hover {
   opacity: .7;
+}
+
+.search__error {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF3055;
+  margin-left: 20px;
 }
 
 .search__switch {

@@ -12,6 +12,8 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MovieApi';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import { getCardsRender } from '../../utils/cardsRender';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -25,11 +27,7 @@ function App() {
   const [message, setMessage] = React.useState({
     searchForm: null,
   });
-  const [amountCards, setAmountCards] = React.useState({
-    startCards: 0,
-    rowCards: 0,
-    moreCards: 0,
-  });
+  const [amountCards, setAmountCards] = React.useState({total: 12, add: 3});
   const [isRequestStatus, setIsRequestStatus] = React.useState('');
   const history = useHistory();
   
@@ -56,12 +54,7 @@ function App() {
     }
   }, [loggedIn])
 
-  React.useEffect(() => {
-    const localMovies = JSON.parse(localStorage.getItem('foundMovies'));
-    if (localMovies !== null && loggedIn) {
-      setMovies(localMovies);
-    }
-  }, [loggedIn]);
+  
 
   React.useEffect(() => { 
       mainApi 
@@ -81,8 +74,9 @@ function App() {
   const handleRegister = ({name, password, email}) => { 
     mainApi 
       .register(name, password, email) 
-      .then(() => { 
-        history.push('/signin')
+      .then((res) => { 
+        handleLogin({email, password})
+        history.push('/movies')
       })
       .catch((err) => { 
         if (err === '409') {
@@ -201,9 +195,9 @@ function App() {
     (movie) => movie.duration <= 40,
   )
 
-  const filterSavedMovies = !isShortMovies ? savedMovies : savedMovies.filter(
-    (movie) => movie.duration <= 40,
-  )
+  // const filterSavedMovies = !isShortMovies ? savedMovies : savedMovies.filter(
+  //   (movie) => movie.duration <= 40,
+  // )
 
   function handleShortMovies() {
     if (!isShortMovies) {
@@ -214,49 +208,36 @@ function App() {
   }
 
   // show "more" cards
-  React.useEffect(() => {
-    limitAmountCards();
-  }, []);
 
-  function limitAmountCards() {
-    const viewportWidth = window.innerWidth;
-    if (viewportWidth < 767 ) {
-      setAmountCards({ startCards: 5, rowCards: 1, moreCards: 2 });
-    } else if (viewportWidth < 1200) {
-      setAmountCards({ startCards: 8, rowCards: 2, moreCards: 2 });
-    } else {
-      setAmountCards({ startCards: 12, rowCards: 3, moreCards: 3 });
-    }
-  }
+  const { width } = useWindowSize();
+
+  React.useEffect (() => {
+    setAmountCards(getCardsRender(width))
+  }, [width])
 
   const handleMoreBtn = () => {
     return setAmountCards({
       ...amountCards,
-      startCards: amountCards.startCards + amountCards.moreCards,
+      total: amountCards.total + amountCards.add,
     });
   };
 
   React.useEffect(() => { 
-    if (filterMovies.length > amountCards.startCards) {
+    if (filterMovies.length > amountCards.total) {
       setMoreBtnVisibility(true);
     } else {
       setMoreBtnVisibility(false);
     }
   }, [filterMovies, amountCards])
 
-  React.useEffect(() => { 
-    if (filterSavedMovies.length > amountCards.startCards) {
-      setMoreBtnVisibility(true);
-    } else {
-      setMoreBtnVisibility(false);
-    }
-  }, [filterSavedMovies, amountCards])
+  // React.useEffect(() => { 
+  //   if (filterSavedMovies.length > amountCards.total) {
+  //     setMoreBtnVisibility(true);
+  //   } else {
+  //     setMoreBtnVisibility(false);
+  //   }
+  // }, [filterSavedMovies, amountCards])
 
-  window.addEventListener("resize", function () {
-    setTimeout(() => {
-      limitAmountCards();
-    }, 250);
-  });
 
   // save/delete movies
   const handleSaveMovie= (movie) => {
@@ -311,13 +292,13 @@ function App() {
           isShortMovies={isShortMovies}
           onMoreBtn={handleMoreBtn}
           moreBtnVisibility={moreBtnVisibility}
-          amount={amountCards.startCards}
+          amount={amountCards.total}
         />
         <ProtectedRoute
           path="/saved-movies"
           component={SavedMovies}
           loggedIn={loggedIn} 
-          movies={filterSavedMovies}
+          movies={savedMovies}
           onSubmit={handleSearchSavedMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
@@ -327,7 +308,7 @@ function App() {
           isShortMovies={isShortMovies}
           onMoreBtn={handleMoreBtn}
           moreBtnVisibility={moreBtnVisibility}
-          amount={amountCards.startCards}
+          amount={amountCards.total}
         />
         <ProtectedRoute
           path="/profile"
@@ -347,13 +328,13 @@ function App() {
           }
         </Route>
         <Route path="/signup">
-        {loggedIn 
-            ? <Redirect to="/" />
-            : <Register 
-            handleRegister={handleRegister}
-            errorMessage={isRequestStatus}
-            />
-          }
+          {loggedIn 
+              ? <Redirect to="/" />
+              : <Register 
+              handleRegister={handleRegister}
+              errorMessage={isRequestStatus}
+              />
+            }
         </Route>
         <Route path="*">
           <PageNotFound />

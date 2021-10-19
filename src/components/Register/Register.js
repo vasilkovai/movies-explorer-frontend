@@ -30,6 +30,8 @@ function Register({handleRegister, errorMessage}) {
               value={values.name || ''}
               autoComplete="off"
               required
+              minLength="2"
+              maxLength="30"
             />
             <span className={`${errors.name ? "login__input-error" : null}`}>{errors.name}</span>
           </fieldset>
@@ -45,6 +47,7 @@ function Register({handleRegister, errorMessage}) {
               value={values.email || ''}
               autoComplete="off"
               required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
             />
             <span className={`${errors.email ? "login__input-error" : null}`}>{errors.email}</span>
           </fieldset>
@@ -60,6 +63,8 @@ function Register({handleRegister, errorMessage}) {
               value={values.password || ''}
               autoComplete="off"
               required
+              minLength="8"
+              maxLength="30"
             />
             <span className={`${errors.password? "login__input-error" : null}`}>{errors.password}</span>
           </fieldset>

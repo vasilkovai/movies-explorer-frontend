@@ -3,6 +3,11 @@ import './SearchForm.css';
 
 function SearchForm({onSubmit}) {
   const [movieValue, setMovieValue] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  React.useEffect(() => {
+    setErrorMessage('');
+  }, [movieValue]);
 
   function handleMovieChange(e) {
     setMovieValue(e.target.value);
@@ -10,6 +15,11 @@ function SearchForm({onSubmit}) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if(!movieValue) {
+      setErrorMessage('Нужно ввести ключевое слово');
+      return;
+    }
 
     onSubmit(movieValue);
   }
@@ -20,7 +30,7 @@ function SearchForm({onSubmit}) {
 
   return (
     <div className="search">
-      <form className="search__form" onSubmit={handleSubmit}>
+      <form className="search__form" onSubmit={handleSubmit} noValidate>
         <input 
           type="text"
           placeholder="Фильм"
@@ -30,6 +40,7 @@ function SearchForm({onSubmit}) {
           value={movieValue}
         />
         <button className="search__button"></button>
+        <p className="search__error">{errorMessage}</p>
       </form>
     </div>
   );
