@@ -12,23 +12,22 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MovieApi';
-import { useWindowSize } from '../../hooks/useWindowSize';
-import { getCardsRender } from '../../utils/cardsRender';
+
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [movies, setMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
+  
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
-  const [isShortMovies, setIsShortMovies] = React.useState(false);
   const [message, setMessage] = React.useState({
     searchForm: null,
   });
-  const [amountCards, setAmountCards] = React.useState({total: 12, add: 3});
   const [isRequestStatus, setIsRequestStatus] = React.useState('');
+  const [isRequestLoginStatus, setIsRequestLoginStatus] = React.useState('');
+  const [isRequestRegisterStatus, setIsRequestRegisterStatus] = React.useState('');
   const history = useHistory();
   
   // get user content
@@ -42,19 +41,21 @@ function App() {
         .catch(error => { 
           console.error(error)
         })
-      mainApi
-        .getSavedMovies()
-        .then((movie) => { 
-          setSavedMovies(movie.data)
-          localStorage.setItem('savedMovies', JSON.stringify(movie.data));
-        })
-        .catch(error => { 
-          console.error(error)
-        })
     }
   }, [loggedIn])
 
-  
+  React.useEffect(() => { 
+    mainApi
+      .getSavedMovies()
+      .then((res) => { 
+        setSavedMovies(res.data.filter((movie) => movie.owner === currentUser._id))
+        localStorage.setItem('savedMovies', JSON.stringify(res.data));
+      })
+      .catch(error => { 
+        console.error(error)
+      })
+
+  }, [currentUser])
 
   React.useEffect(() => { 
       mainApi 
@@ -80,9 +81,9 @@ function App() {
       })
       .catch((err) => { 
         if (err === '409') {
-          setIsRequestStatus('Пользователь с таким email уже существует.');
+          setIsRequestRegisterStatus('Пользователь с таким email уже существует.');
         } else {
-          setIsRequestStatus('При регистрации профиля произошла ошибка.');
+          setIsRequestRegisterStatus('При регистрации профиля произошла ошибка.');
         }
       })   
   } 
@@ -97,11 +98,11 @@ function App() {
       }) 
       .catch((err) => { 
         if (err === '401') {
-          setIsRequestStatus('Вы ввели неправильный логин или пароль.');
+          setIsRequestLoginStatus('Вы ввели неправильный логин или пароль.');
         } else if (err === '400') {
-          setIsRequestStatus('Введите корректные данные.');
+          setIsRequestLoginStatus('Введите корректные данные.');
         } else {
-          setIsRequestStatus('При авторизации произошла ошибка.');
+          setIsRequestLoginStatus('При авторизации произошла ошибка.');
         }
       })
   }
@@ -158,8 +159,8 @@ function App() {
       setIsLoading(true);
       moviesApi
         .getMovies()
-        .then((data) => {
-          localStorage.setItem('beatFilmMovies', JSON.stringify(data));
+        .then((res) => {
+          localStorage.setItem('beatFilmMovies', JSON.stringify(res.data));
           setIsLoading(false);
         })
         .then(() => {
@@ -189,55 +190,6 @@ function App() {
       });
     }
   }
-
-  // checkbox
-  const filterMovies = !isShortMovies ? movies : movies.filter(
-    (movie) => movie.duration <= 40,
-  )
-
-  // const filterSavedMovies = !isShortMovies ? savedMovies : savedMovies.filter(
-  //   (movie) => movie.duration <= 40,
-  // )
-
-  function handleShortMovies() {
-    if (!isShortMovies) {
-      setIsShortMovies(true)
-    } else {
-      setIsShortMovies(false);
-    }
-  }
-
-  // show "more" cards
-
-  const { width } = useWindowSize();
-
-  React.useEffect (() => {
-    setAmountCards(getCardsRender(width))
-  }, [width])
-
-  const handleMoreBtn = () => {
-    return setAmountCards({
-      ...amountCards,
-      total: amountCards.total + amountCards.add,
-    });
-  };
-
-  React.useEffect(() => { 
-    if (filterMovies.length > amountCards.total) {
-      setMoreBtnVisibility(true);
-    } else {
-      setMoreBtnVisibility(false);
-    }
-  }, [filterMovies, amountCards])
-
-  // React.useEffect(() => { 
-  //   if (filterSavedMovies.length > amountCards.total) {
-  //     setMoreBtnVisibility(true);
-  //   } else {
-  //     setMoreBtnVisibility(false);
-  //   }
-  // }, [filterSavedMovies, amountCards])
-
 
   // save/delete movies
   const handleSaveMovie= (movie) => {
@@ -280,7 +232,7 @@ function App() {
           path="/movies"
           component={Movies}
           loggedIn={loggedIn}
-          movies={filterMovies}
+          movies={movies}
           onSubmit={handleSearchMovies}
           onSaveMovie={handleSaveMovie}
           message={message}
@@ -288,11 +240,7 @@ function App() {
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
           onMovieDelete={handleMovieDelete}
-          showShortMovies={handleShortMovies}
-          isShortMovies={isShortMovies}
-          onMoreBtn={handleMoreBtn}
-          moreBtnVisibility={moreBtnVisibility}
-          amount={amountCards.total}
+
         />
         <ProtectedRoute
           path="/saved-movies"
@@ -302,13 +250,7 @@ function App() {
           onSubmit={handleSearchSavedMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
-          savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
-          showShortMovies={handleShortMovies}
-          isShortMovies={isShortMovies}
-          onMoreBtn={handleMoreBtn}
-          moreBtnVisibility={moreBtnVisibility}
-          amount={amountCards.total}
         />
         <ProtectedRoute
           path="/profile"
@@ -323,7 +265,7 @@ function App() {
             ? <Redirect to="/" />
             : <Login 
               handleLogin={handleLogin}
-              errorMessage={isRequestStatus}
+              errorMessage={isRequestLoginStatus}
             />
           }
         </Route>
@@ -332,7 +274,7 @@ function App() {
               ? <Redirect to="/" />
               : <Register 
               handleRegister={handleRegister}
-              errorMessage={isRequestStatus}
+              errorMessage={isRequestRegisterStatus}
               />
             }
         </Route>

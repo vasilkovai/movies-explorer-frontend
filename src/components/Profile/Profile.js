@@ -53,6 +53,8 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
                 onChange={handleChange}
                 disabled={!isEdit}
                 required
+                minLength="2"
+                maxLength="30"
               />
             </fieldset>
 
