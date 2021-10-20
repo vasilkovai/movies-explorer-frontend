@@ -1,10 +1,13 @@
 import React from 'react';
 import './MoreButton.css';
 
-function MoreButton() {
+function MoreButton({ onMoreBtn, isVisible}) {
   return (
-    <div className="more">
-      <button type="button" className="more-btn">Ещё</button>
+    <div className={`more ${isVisible && "more_active"}`}>
+      <button 
+        type="button" 
+        className="more-btn" 
+        onClick={onMoreBtn}>Ещё</button>
     </div>
   );
 }

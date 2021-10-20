@@ -35,6 +35,13 @@ function NavBar() {
               <Link className="navbar__page" to="/saved-movies">Сохранённые фильмы</Link>
             </div>
           </Route>
+          <Route exact path="/" >
+            <div className="navbar__pages">
+              <Link className="navbar__page_active" to="/">Главная</Link>
+              <Link className="navbar__page" to="/movies">Фильмы</Link>
+              <Link className="navbar__page" to="/saved-movies">Сохранённые фильмы</Link>
+            </div>
+          </Route>
           <Link to="/profile" className="navbar__profile">
             <img className="navbar__profile-icon" alt="Аккаунт" src={profileIcon}/>
           </Link>

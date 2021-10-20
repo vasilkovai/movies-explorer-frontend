@@ -1,12 +1,13 @@
 import React from 'react';
-import Header from '../Header/Header';
+import Header from '../Header/Header'
 import promoLogo from './../../images/logo_promo.png';
 import './Promo.css';
 
-function Promo() {
+function Promo({loggedIn}) {
+
   return (
     <div className="promo">
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <div className="promo__container">
         <div className="promo__text">
           <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>
