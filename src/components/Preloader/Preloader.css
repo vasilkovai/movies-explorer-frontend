@@ -43,10 +43,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    max-width: 1280px;
+    height: 100vh;
     z-index: 10;
-    padding: 20px;
+    margin: auto;
 }
 
 .preloader__container {
@@ -85,4 +85,16 @@
     z-index: 10;
     background: black;
     animation: preloader-inside-red 1s ease-in-out infinite;
+}
+
+@media screen and (max-width: 1279px) {
+  .preloader {
+    max-width: 768px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .preloader {
+    max-width: 320px;
+  }
 }

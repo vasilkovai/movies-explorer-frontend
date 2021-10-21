@@ -5,13 +5,15 @@ import '../Login/Login.css';
 import '../Header/Header.css';
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 
-function Register({handleRegister, errorMessage}) {
+function Register({
+  handleRegister, 
+  errorMessage,
+}) {
   const { values, errors, isValid, handleChange } = useFormWithValidation();
-  const { name, email, password } = values;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleRegister({ name, email, password });
+    handleRegister(values);
   };
 
   return (

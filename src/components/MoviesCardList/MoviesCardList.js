@@ -5,8 +5,8 @@ import './MoviesCardList.css';
 function MoviesCardList({movies, message, onSaveMovie, onMovieDelete, savedMovies, amount}) {
   return (
     <div className="cards">
-      { message.searchForm ? (
-        <span className="cards__error">{message.searchForm}</span>) : (
+      { message ? (
+        <span className="cards__error">{message}</span>) : (
         <ul className="cards__list">
           {movies.slice(0, amount).map(movie => {
             return (

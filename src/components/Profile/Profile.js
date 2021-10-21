@@ -5,22 +5,36 @@ import './Profile.css';
 import '../Login/Login.css';
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 
-function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
+function Profile({
+  onUpdateUser, 
+  signOut, 
+  loggedIn, 
+  responseMessage,
+}) {
+  const { 
+    values, 
+    isValid, 
+    errors,
+    handleChange, 
+    resetForm,
+    setValues,
+  } = useFormWithValidation();
   const [isEdit, setIsEdit] = React.useState(false)
-
   const currentUser = React.useContext(CurrentUserContext);
-
-  const { values, setValues, handleChange, resetForm, isValid, errors } =
-    useFormWithValidation();
-  const { name, email } = values;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (currentUser.name !== name || currentUser.email !== email) {
-      onUpdateUser({ name, email });
-    }
+    onUpdateUser(values);
     setIsEdit(false)
   };
+
+  function handleEditClick() {
+    resetForm({ 
+      name: currentUser.name, 
+      email: currentUser.email 
+    });
+    setIsEdit(true)
+  }
 
   React.useEffect(() => {
     setValues({
@@ -28,11 +42,6 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
       email: currentUser.email,
     });
   }, [setValues, currentUser]);
-
-  function handleEditClick() {
-    resetForm(currentUser, {}, false);
-    setIsEdit(true)
-  }
 
   return (
     <div className="profile">
@@ -74,7 +83,9 @@ function Profile({onUpdateUser, signOut, loggedIn, errorMessage}) {
               />
               <span className={`${errors.email ? "profile__input-error" : null}`}>{errors.email}</span>
             </fieldset>
-            <span className="profile__request-error">{errorMessage}</span>
+            {!isEdit 
+            ? <span className="profile__request-error">{responseMessage}</span>
+            : ''}
             { isEdit ? (
               <button 
                 type="submit" 

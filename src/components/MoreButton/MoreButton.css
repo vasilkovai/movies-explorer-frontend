@@ -5,11 +5,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
+  display: none;
 }
 
 .more_active {
-  visibility: visible;
+  display: flex;
 }
 
 .more-btn {

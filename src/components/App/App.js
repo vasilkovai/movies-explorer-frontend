@@ -7,6 +7,7 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Profile from '../Profile/Profile';
+import Popup from '../Popup/Popup';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -20,12 +21,11 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
-  const [message, setMessage] = React.useState({
-    searchForm: null,
-  });
+  const [message, setMessage] = React.useState('');
   const [isRequestStatus, setIsRequestStatus] = React.useState('');
   const [isRequestLoginStatus, setIsRequestLoginStatus] = React.useState('');
   const [isRequestRegisterStatus, setIsRequestRegisterStatus] = React.useState('');
+  const [popup, setPopup] = React.useState(false);
   const history = useHistory();
   
   // get user content
@@ -71,6 +71,7 @@ function App() {
 
   // auth
   const handleRegister = ({name, password, email}) => { 
+    setIsLoading(true)
     mainApi 
       .register(name, password, email) 
       .then((res) => { 
@@ -79,14 +80,16 @@ function App() {
       })
       .catch((err) => { 
         if (err === '409') {
-          setIsRequestRegisterStatus('Пользователь с таким email уже существует.');
+          setIsRequestRegisterStatus('Пользователь с таким e-mail уже существует.');
         } else {
           setIsRequestRegisterStatus('При регистрации профиля произошла ошибка.');
         }
-      })   
+      })
+      .finally(() => setIsLoading(false));   
   } 
 
   const handleLogin = ({password, email}) => { 
+    setIsLoading(true)
     mainApi 
       .login(password, email) 
       .then((res) => { 
@@ -103,9 +106,11 @@ function App() {
           setIsRequestLoginStatus('При авторизации произошла ошибка.');
         }
       })
+      .finally(() => setIsLoading(false));
   }
 
   const handleSignOut = () => {
+    setIsLoading(true)
     mainApi
       .signOut()
       .then(() => {
@@ -116,6 +121,7 @@ function App() {
       .catch(error => { 
         console.error(error)
       })
+      .finally(() => setIsLoading(false));
   }
 
   // edit profile
@@ -125,9 +131,12 @@ function App() {
       .then((user) => {
         setCurrentUser(user.data)
       })
+      .then(() => {
+        setIsRequestStatus('Профиль обновлён.');
+      })
       .catch((err) => { 
         if (err === '409') {
-          setIsRequestStatus('Пользователь с таким email уже существует.');
+          setIsRequestStatus('Пользователь с таким e-mail уже существует.');
         } else {
           setIsRequestStatus('При обновлении профиля произошла ошибка.');
         }
@@ -139,15 +148,11 @@ function App() {
     const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
     const foundMovies = beatFilmMovies.filter((c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
     if (foundMovies.length === 0) {
-      setMessage({
-        searchForm: 'Ничего не найдено',
-      });
+      setMessage('Ничего не найдено.');
     } else {
       setMovies(foundMovies);
       localStorage.setItem('searchMovies', JSON.stringify(foundMovies));
-      setMessage({
-        searchForm: '',
-      });
+      setMessage('');
     }
   };
 
@@ -178,14 +183,10 @@ function App() {
     const foundSavedMovies = savedMovies.filter(
       (c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
     if (foundSavedMovies.length === 0) {
-      setMessage({
-        searchForm: 'Ничего не найдено',
-      });
+      setMessage('Ничего не найдено.');
     } else {
       setSavedMovies(foundSavedMovies);
-      setMessage({
-        searchForm: '',
-      });
+      setMessage('');
     }
   }
 
@@ -199,6 +200,7 @@ function App() {
       })
       .catch(error => { 
         console.error(error)
+        setPopup(true)
       })
   }
 
@@ -216,6 +218,10 @@ function App() {
       .catch(error => { 
         console.error(error)
       })
+  }
+
+  const closePopup = () => {
+    setPopup(false)
   }
 
   return (
@@ -238,7 +244,6 @@ function App() {
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
           onMovieDelete={handleMovieDelete}
-
         />
         <ProtectedRoute
           path="/saved-movies"
@@ -248,6 +253,7 @@ function App() {
           onSubmit={handleSearchSavedMovies}
           onMovieDelete={handleMovieDelete}
           message={message}
+          isLoading={isLoading}
           isCheckingToken={isCheckingToken}
         />
         <ProtectedRoute
@@ -256,31 +262,35 @@ function App() {
           loggedIn={loggedIn} 
           signOut={handleSignOut}
           onUpdateUser={handleUpdateUser}
-          errorMessage={isRequestStatus}
           isCheckingToken={isCheckingToken}
+          responseMessage={isRequestStatus}
         />
         <Route path="/signin">
           {loggedIn 
             ? <Redirect to="/" />
             : <Login 
-              handleLogin={handleLogin}
-              errorMessage={isRequestLoginStatus}
-            />
+                handleLogin={handleLogin}
+                errorMessage={isRequestLoginStatus}
+              />
           }
         </Route>
         <Route path="/signup">
           {loggedIn 
-              ? <Redirect to="/" />
-              : <Register 
-              handleRegister={handleRegister}
-              errorMessage={isRequestRegisterStatus}
+            ? <Redirect to="/" />
+            : <Register 
+                handleRegister={handleRegister}
+                errorMessage={isRequestRegisterStatus}
               />
-            }
+          }
         </Route>
         <Route path="*">
           <PageNotFound />
         </Route>
       </Switch>
+      <Popup
+        isOpen={popup}
+        onClose={closePopup}
+      />
     </CurrentUserContext.Provider>
   );
 }

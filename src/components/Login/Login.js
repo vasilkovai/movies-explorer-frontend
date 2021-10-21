@@ -6,12 +6,11 @@ import '../Header/Header.css';
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 
 function Login({handleLogin, errorMessage}) {
-  const { values, errors, isValid, handleChange } = useFormWithValidation();
-  const { email, password } = values;
+  const { values, errors, isValid, handleChange } = useFormWithValidation({});
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleLogin({email, password});
+    handleLogin(values);
   };
 
   return (

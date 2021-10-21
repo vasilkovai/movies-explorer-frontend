@@ -82,10 +82,13 @@ function Movies({
           amount={amountCards.total}
         />)
       }
-      <MoreButton 
+      {filterMovies.length === 0
+      ?  <MoreButton 
         onMoreBtn={handleMoreBtn}
         isVisible={moreBtnVisibility}
       />
+      : ''
+      }
     </div>
   );
 }

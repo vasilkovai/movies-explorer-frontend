@@ -17,7 +17,7 @@ function SearchForm({onSubmit}) {
     e.preventDefault();
 
     if(!movieValue) {
-      setErrorMessage('Нужно ввести ключевое слово');
+      setErrorMessage('Нужно ввести ключевое слово.');
       return;
     }
 

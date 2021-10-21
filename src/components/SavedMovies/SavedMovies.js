@@ -4,6 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoreButton from '../MoreButton/MoreButton';
+import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
@@ -15,6 +16,7 @@ function SavedMovies({
   message, 
   loggedIn, 
   onSubmit,
+  isLoading,
 }) {
   const [isShortMovies, setIsShortMovies] = React.useState(false);
   const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
@@ -65,16 +67,22 @@ function SavedMovies({
         isShortMovies={isShortMovies}
         showShortMovies={handleShortMovies}
       />
-      <MoviesCardList
-        movies={filterSavedMovies}
-        onMovieDelete={onMovieDelete}
-        message={message}
-        amount={amountCards.total}
-      />
-      <MoreButton 
+      {isLoading 
+      ? (<Preloader />) 
+      : (<MoviesCardList
+          movies={filterSavedMovies}
+          onMovieDelete={onMovieDelete}
+          message={message}
+          amount={amountCards.total}
+        />)
+      }
+      {filterSavedMovies.length === 0
+      ?  <MoreButton 
         onMoreBtn={handleMoreBtn}
         isVisible={moreBtnVisibility}
       />
+      : ''
+      }
     </div>
   );
 }
