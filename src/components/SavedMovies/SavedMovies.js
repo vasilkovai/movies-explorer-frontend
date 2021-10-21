@@ -76,13 +76,10 @@ function SavedMovies({
           amount={amountCards.total}
         />)
       }
-      {filterSavedMovies.length === 0
-      ?  <MoreButton 
+      <MoreButton 
         onMoreBtn={handleMoreBtn}
         isVisible={moreBtnVisibility}
       />
-      : ''
-      }
     </div>
   );
 }
