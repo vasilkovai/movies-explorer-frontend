@@ -162,9 +162,9 @@ function App() {
       setIsLoading(true);
       moviesApi
         .getMovies()
-        .then((res) => {
-          localStorage.setItem('beatFilmMovies', JSON.stringify(res.data));
-          setIsLoading(false);
+        .then((data) => {
+          localStorage.setItem('beatFilmMovies', JSON.stringify(data));
+          setMovies(data)
         })
         .then(() => {
           searchMovies(name);

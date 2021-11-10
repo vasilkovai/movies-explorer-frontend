@@ -6,16 +6,15 @@ class MoviesApi {
     this._headers = headers;
   }
 
-  _checkStatus = (res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Что-то пошло не так: ${res.status}`);
-    }
+  _checkStatus(res) {
+    return res.ok
+     ? res.json() 
+     : Promise.reject(`${res.status}`);
   }
 
   getMovies() {
     return fetch(`${this._baseUrl}`, {
+      method: 'GET',
       headers: this._headers,
     })
     .then(this._checkStatus)
