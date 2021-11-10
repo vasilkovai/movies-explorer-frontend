@@ -146,7 +146,8 @@ function App() {
   // search movies
   const searchMovies = (name) => {
     const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
-    const foundMovies = beatFilmMovies.filter((c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
+    const foundMovies = beatFilmMovies.filter(
+      (c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
     if (foundMovies.length === 0) {
       setMessage('Ничего не найдено.');
     } else {
@@ -162,9 +163,9 @@ function App() {
       setIsLoading(true);
       moviesApi
         .getMovies()
-        .then((data) => {
-          localStorage.setItem('beatFilmMovies', JSON.stringify(data));
-          setMovies(data)
+        .then((res) => {
+          localStorage.setItem('beatFilmMovies', JSON.stringify(res.data));
+          setMovies(res.data)
         })
         .then(() => {
           searchMovies(name);
