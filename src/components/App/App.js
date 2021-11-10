@@ -45,9 +45,9 @@ function App() {
   React.useEffect(() => { 
     mainApi
       .getSavedMovies()
-      .then((res) => { 
-        setSavedMovies(res.data.filter((movie) => movie.owner === currentUser._id))
-        localStorage.setItem('savedMovies', JSON.stringify(res.data));
+      .then((data) => { 
+        setSavedMovies(data.filter((movie) => movie.owner === currentUser._id))
+        localStorage.setItem('savedMovies', JSON.stringify(data));
       })
       .catch(error => { 
         console.error(error)
@@ -196,8 +196,8 @@ function App() {
     mainApi
       .saveMovie(movie)
       .then((newMovie) => {
-        setSavedMovies([newMovie.data, ...savedMovies])
-        localStorage.setItem('savedMovies', JSON.stringify([newMovie.data, ...savedMovies]));
+        setSavedMovies([newMovie, ...savedMovies])
+        localStorage.setItem('savedMovies', JSON.stringify([newMovie, ...savedMovies]));
       })
       .catch(error => { 
         console.error(error)
