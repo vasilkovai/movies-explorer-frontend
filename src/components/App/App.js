@@ -165,6 +165,7 @@ function App() {
         .getMovies()
         .then((res) => {
           localStorage.setItem('beatFilmMovies', JSON.stringify(res.data));
+          setMovies(res.data)
         })
         .then(() => {
           searchMovies(name);

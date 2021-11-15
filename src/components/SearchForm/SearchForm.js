@@ -37,7 +37,7 @@ function SearchForm({onSubmit}) {
           className="search__input"
           required
           onChange={handleMovieChange}
-          value={movieValue || ''}
+          value={movieValue}
         />
         <button className="search__button"></button>
         <p className="search__error">{errorMessage}</p>
