@@ -6,6 +6,7 @@ import Preloader from '../Preloader/Preloader'
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import MoreButton from '../MoreButton/MoreButton';
 import './Movies.css';
+import '../MoviesCardList/MoviesCardList.css'
 
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { getCardsRender } from '../../utils/cardsRender';
@@ -19,6 +20,7 @@ function Movies({
   isLoading,
   savedMovies,
   onMovieDelete,
+  isSearchDone
 }) {
   const [isShortMovies, setIsShortMovies] = React.useState(false);
   const [moreBtnVisibility, setMoreBtnVisibility] = React.useState(false);
@@ -71,9 +73,11 @@ function Movies({
       showShortMovies={handleShortMovies}
       isShortMovies={isShortMovies}
       />
-      {isLoading ? 
-        (<Preloader />) :
-        (<MoviesCardList 
+      {isLoading 
+      ? (<Preloader />) 
+      : isSearchDone
+      ? filterMovies.length > 0
+      ? (<MoviesCardList 
           movies={filterMovies}
           message={message}
           onSaveMovie={onSaveMovie}
@@ -81,6 +85,8 @@ function Movies({
           onMovieDelete={onMovieDelete}
           amount={amountCards.total}
         />)
+      : (<span className="movies__error">Ничего не найдено.</span>)
+      : ('')
       }
       <MoreButton 
         onMoreBtn={handleMoreBtn}

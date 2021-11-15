@@ -1,0 +1,12 @@
+.movies__error {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #A0A0A0;
+  display: flex;
+  justify-content: center;
+  padding: 70px 0 30px 0;
+}

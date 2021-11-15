@@ -26,6 +26,7 @@ function App() {
   const [isRequestLoginStatus, setIsRequestLoginStatus] = React.useState('');
   const [isRequestRegisterStatus, setIsRequestRegisterStatus] = React.useState('');
   const [popup, setPopup] = React.useState(false);
+  const [isSearchDone, setIsSearchDone] = React.useState(false)
   const history = useHistory();
   
   // get user content
@@ -144,39 +145,24 @@ function App() {
     }
 
   // search movies
-  const searchMovies = (name) => {
-    const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
-    const foundMovies = beatFilmMovies.filter(
-      (c) => c.nameRU.toLowerCase().includes(name.toLowerCase()));
-    if (foundMovies.length === 0) {
-      setMessage('Ничего не найдено.');
-    } else {
-      setMovies(foundMovies);
-      localStorage.setItem('searchMovies', JSON.stringify(foundMovies));
-      setMessage('');
-    }
+  const searchMovies = (movie, name) => {
+    return movie.filter(
+      m => m.nameRU.toLowerCase().indexOf(name.toLowerCase()) !== -1);
   };
 
   const handleSearchMovies = (name) => {
-    const beatFilmMovies = JSON.parse(localStorage.getItem('beatFilmMovies'));
-    if (!beatFilmMovies) {
       setIsLoading(true);
       moviesApi
         .getMovies()
         .then((res) => {
-          localStorage.setItem('beatFilmMovies', JSON.stringify(res.data));
-          setMovies(res.data)
-        })
-        .then(() => {
-          searchMovies(name);
+          const newMovies = searchMovies(res, name);
+          setMovies(newMovies);
+          setIsSearchDone(true)
         })
         .catch(error => { 
           console.error(error)
         })
         .finally(() => setIsLoading(false));
-    } else {
-      searchMovies(name);
-    }
   };
 
   const handleSearchSavedMovies = (name) => {
@@ -245,6 +231,7 @@ function App() {
           savedMovies={savedMovies}
           isCheckingToken={isCheckingToken}
           onMovieDelete={handleMovieDelete}
+          isSearchDone={isSearchDone}
         />
         <ProtectedRoute
           path="/saved-movies"
