@@ -1,5 +1,5 @@
 import React from 'react';
-import photoStudent from './../../images/aboutme.jpeg';
+import photoStudent from './../../images/aboutme2.jpeg';
 import './AboutMe.css';
 
 function AboutMe() {
@@ -12,7 +12,7 @@ function AboutMe() {
           <h4 className="about-me__info">Веб-разработчица, 28 лет</h4>
           <p className="about-me__about">
             Я родилась в городе Уфа, 
-            в 18 лет переехала в Санкт-Петербург поступать на экномиста в СПбГЭУ, 
+            в 18 лет переехала в Санкт-Петербург поступать на экoномиста в СПбГЭУ, 
             после университета устроилась на работу аудитором, 
             но 2020 год дал понять, что заниматься этим всю жизнь я не хочу и мне интересно попробовать профессию будущего.
             Свой путь в изучении я начала с языка Python и первый же проект "Социальная сеть на Django" определил, 
@@ -20,7 +20,7 @@ function AboutMe() {
           </p>
         </div>
         <div className="about-me__links">
-          <a href="https://vk.com/vasilkovai" className="about-me__link" target="_blank" rel="noreferrer">VK</a>
+          <a href="https://www.linkedin.com/in/vasilkovai/" className="about-me__link" target="_blank" rel="noreferrer">LinkendIn</a>
           <a href="https://github.com/vasilkovai" className="about-me__link" target="_blank" rel="noreferrer">Github</a>
         </div>
         <img className="about-me__photo" alt="Фото студента" src={photoStudent}/>

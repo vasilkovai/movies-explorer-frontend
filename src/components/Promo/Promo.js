@@ -14,7 +14,7 @@ function Promo({loggedIn}) {
           <p className="promo__paragraph">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
         </div>
         <img className="promo__logo" alt="Логотип" src={promoLogo}/>
-        <a className="promo__about" href="#about=project">Узнать больше</a>
+        <a className="promo__about" href="#about-project">Узнать больше</a>
       </div>
     </div>
   );
