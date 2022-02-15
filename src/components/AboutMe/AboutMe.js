@@ -20,7 +20,7 @@ function AboutMe() {
           </p>
         </div>
         <div className="about-me__links">
-          <a href="https://www.linkedin.com/in/vasilkovai/" className="about-me__link" target="_blank" rel="noreferrer">LinkendIn</a>
+          <a href="https://www.linkedin.com/in/vasilkovai/" className="about-me__link" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/vasilkovai" className="about-me__link" target="_blank" rel="noreferrer">Github</a>
         </div>
         <img className="about-me__photo" alt="Фото студента" src={photoStudent}/>

@@ -11,7 +11,7 @@ function Footer() {
         <ul className="footer__links">
           <li className="footer__link-list"><a className="footer__link" href="https://practicum.yandex.ru" target="_blank" rel="noreferrer">Яндекс.Практикум</a></li>
           <li className="footer__link-list"><a href="https://github.com/vasilkovai" className="footer__link" target="_blank" rel="noreferrer">Github</a></li>
-          <li className="footer__link-list"><a href="https://www.linkedin.com/in/vasilkovai/" className="footer__link" target="_blank" rel="noreferrer">LinkendIn</a></li>
+          <li className="footer__link-list"><a href="https://www.linkedin.com/in/vasilkovai/" className="footer__link" target="_blank" rel="noreferrer">LinkedIn</a></li>
         </ul>
       </div>
     </div>
